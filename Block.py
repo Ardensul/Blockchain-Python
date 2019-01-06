@@ -7,17 +7,15 @@ class Block:
         self.data = data
         self.signatur = 'RS'
         self.workProof = ''
-        #self.currentHash = self.currenthash()
-        self.block = str(self.previousHash) + str(self.data) + str(self.signatur) + str(self.workProof)
+        self.currentHash = self.currenthash()
 
     def currenthash(self):
         block = str(self.previousHash) + str(self.data) + str(self.signatur) + str(self.workProof)
-        block.encode(encoding='Bytes')
-        #hash_objet = hashlib.sha256(block)
-        #value =  hash_objet.hexdigest()
-        #return value
+        block = block.encode(encoding='Utf-8')
+        hash_objet = hashlib.sha256(block).hexdigest()
+        return hash_objet
 
 
 test = Block('1')
 
-print(test.block)
+print(test.__dict__)
