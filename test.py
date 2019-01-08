@@ -1,6 +1,14 @@
-import hashlib
+from re import *
+from hashlib import *
+from random import *
 
-hash_objet = hashlib.sha256(b'coucou')
-value = hash_objet.hexdigest()
+test = ""
 
-print(value)
+for i in range(0,100):
+    test = test + str(randint(0,9))
+
+print(test)
+test = test.encode('Utf-8')
+
+htest = sha256(test).hexdigest()
+print(htest[0:2])
