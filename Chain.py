@@ -16,7 +16,7 @@ class Chain:
 
 test = Chain()
 
-for i in range(15):
+for i in range(5):
     test.generateBlock(i)
 
 for i in range(len(test.blockChain)):

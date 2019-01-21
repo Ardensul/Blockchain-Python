@@ -1,14 +1,40 @@
-from re import *
-from hashlib import *
-from random import *
+import random
+import sys
+from threading import Thread
+import time
 
-test = ""
+class Afficheur(Thread):
 
-for i in range(0,100):
-    test = test + str(randint(0,9))
+    """Thread chargé simplement d'afficher une lettre dans la console."""
 
-print(test)
-test = test.encode('Utf-8')
+    def __init__(self, lettre):
+        Thread.__init__(self)
+        self.lettre = lettre
 
-htest = sha256(test).hexdigest()
-print(htest[0:2])
+    def run(self):
+        """Code à exécuter pendant l'exécution du thread."""
+        i = 0
+        while i < 20:
+            sys.stdout.write(self.lettre)
+            sys.stdout.flush()
+            attente = 0.2
+            attente += random.randint(1, 60) / 100
+            time.sleep(attente)
+            i += 1
+
+
+
+# Création des threads
+thread_1 = Afficheur("1")
+thread_2 = Afficheur("2")
+
+# Lancement des threads
+thread_1.start()
+thread_2.start()
+
+# Attend que les threads se terminent
+thread_1.join()
+thread_2.join()
+
+
+
