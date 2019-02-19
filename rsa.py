@@ -42,18 +42,7 @@ class Rsa:
         e = randint(100,1000)
         while(gcd(e,totien) !=1):
             e = randint(1,1000)
-        if(p < q):
-            d = q
-        else:
-            d = p
-        compteur = 0
-        while compteur == 0:
-            # Les conditions vues ci-dessus :
-            if ((e * d % totien == 1) and (p < d) and (q < d) and (d < totien)):
-                compteur = 1
-            d = d + 1
-            print(d)
-        d = d - 1
+        d = randint(1,1000)
 
 
         clefs = {"publique": (n, e), "privée": (n, d)}
