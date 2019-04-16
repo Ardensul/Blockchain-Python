@@ -7,43 +7,56 @@ if sys.version_info[0] != 3 or sys.version_info[1] < 5:
         messagebox.showerror("Error", "This app requires Python 3.5 or newer to run.")
     except:
         # Fallback fallback console output
-        print("ERROR: This app requires Python 3.5 or newer to run")
+        print("ERROR: This app requires Python 3.5 or newer to run.")
 
     sys.exit()
 
-## Import Qt5
-try:
-    from PyQt5.QtWidgets import QApplication, QWidget                   # Generic Qt imports
-    from PyQt5.QtWidgets import QLabel, QPushButton                     # User interaction imports
-    from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout   # Layout imports
-except:
-    try:
-        from tkinter import messagebox
-        messagebox.showerror("Error", "This application requires PyQt5 to be installed on your system.")
-    except:
-        print("Error: This application requires PyQt5 to be installed on your system")
-
+## Check dependencies
+import dependencies
+if dependencies.CheckDependencies() == False:
     sys.exit()
 
-## Init app
-app = QApplication([])          # Create application
-window = QWidget()              # Define main window
+## Actually import functions after that
+from PyQt5.QtWidgets import QApplication, QWidget                   # Generic Qt imports
+from PyQt5.QtWidgets import QLabel, QPushButton                     # User interaction imports
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout   # Layout imports
 
-## Define button action
-sampleButton = QPushButton("Close")
-sampleButton.clicked.connect(lambda:sys.exit())
+## Import network functions
+import network
 
-## Define layout
-grid = QGridLayout()
-grid.addWidget(QLabel("Sample text and/or animation"), 0, 0)
-grid.addWidget(sampleButton, 1, 0)
+class App(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("BisonDollar")
 
-## Set layout and prime application to run
-window.setLayout(grid)                  # Apply grid layout to window
-window.setGeometry(100, 100, 200, 100)  # Set window geometry
-window.setWindowTitle("Test")           # Set window title (...no really)
-window.show()
-sys.exit(app.exec_())
+        # Label
+        self.label = QLabel("Is miner running ?")
+
+        # Button
+        self.button = QPushButton("Check")
+        self.button.clicked.connect(self.CheckIfMinerRunning)
+
+        # Layout
+        self.layout = QGridLayout()
+        self.layout.addWidget(self.label, 0, 0)
+        self.layout.addWidget(self.button, 1, 0)
+        self.setLayout(self.layout)
+
+        # Set window geometry
+        self.setMinimumHeight(100)
+        self.setMinimumWidth(200)
+        
+        # Show app
+        self.show()
+
+    # Very self-descriptive functions
+    def CheckIfMinerRunning(self):
+        if network.Ping7777() == True:
+            self.label.setText("Miner is running")
+        else:
+            self.label.setText("Miner is not running")
 
 if __name__ == '__main__':
-    window()
+    app = QApplication(sys.argv)
+    context = App()
+    sys.exit(app.exec_())
