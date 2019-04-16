@@ -1,2 +1,3 @@
-.ida/
-__pycache__/
+\.ida/*
+\__pycache__/*
+test/*
