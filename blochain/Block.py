@@ -17,7 +17,6 @@ class Block:
         while not isfinish :
             block = str(self.previousHash) + str(self.data) + str(self.signature) + str(self.workProof)
             block = block.encode(encoding='Utf-8')
-            hash_objet = sha256(block).hexdigest()
             if hash_objet[0:5] != "0000a":
                 self.workProof += 1
             else:
