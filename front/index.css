@@ -1,0 +1,61 @@
+body
+{
+    background-color: moccasin;
+}
+
+.mining
+{
+    margin: auto;
+    margin-top: 1%;
+    min-width: 400px;
+    padding: 5%;
+    text-align: center;
+    width: 50%;
+    height: 50%;
+    background-color: blanchedalmond;
+}
+
+.wallet
+{
+    margin: auto;
+    margin-top: 1%;
+    min-width: 400px;
+    padding: 5%;
+    text-align: center;
+    width: 50%;
+    height: 50%;
+    background-color: blanchedalmond;
+    
+}
+
+table
+{
+    margin:auto;
+}
+
+td
+{
+    text-align: left;
+    padding: 5%
+}
+
+.transaction
+{
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    text-align: center;
+    width: 50%;
+    height: 50%;
+    background-color:bisque;
+    padding: 5%;
+    min-width: 275px;
+}
+
+#mine
+{
+    padding-top: 3%;
+    padding-bottom: 3%;
+    padding-left: 7%;
+    padding-right: 7%;
+}
