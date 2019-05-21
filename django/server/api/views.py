@@ -9,17 +9,20 @@ def index(request):
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
 
-        address = Address(address=body_data['address'])
-        address.save()
+        addr = Address(address=body_data['address'])
+        addr.save()
+    elif request.method == "DELETE":
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
 
-        return JsonResponse({"success": True})
-    else:
-        results = []
-        for addr in Address.objects.all():
+        addr = Address.objects.filter(address=body_data["address"])
+        addr.delete()
 
-            print(addr.address)
-            results.append(addr.address)
+    results = []
+    for addr in Address.objects.all():
+        print(addr.address)
+        results.append(addr.address)
 
-        print(results)
+    print(results)
 
-        return JsonResponse(results, safe=False)
+    return JsonResponse(results, safe=False)
