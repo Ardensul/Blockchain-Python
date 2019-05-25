@@ -1,10 +1,14 @@
+from django import forms
 from django.db import models
+from datetime import datetime
 
-class Transaction(models.Model):
-    date = models.DateField("date")
-    sender = models.TextField("sender")
-    receive = models.TextField("receive")
-    amount = models.IntegerField("amount")
+
+class Transaction(forms.Form):
+    date = forms.DateTimeField(required=True)
+    sender = forms.CharField(required=True)
+    receive = forms.CharField(required=True)
+    amount = forms.IntegerField(required=True)
+
 
 class User(models.Model):
     private_key = models.TextField("private_key")

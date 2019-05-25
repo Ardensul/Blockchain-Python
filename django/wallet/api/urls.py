@@ -4,4 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path("send/", views.send_from, name="from") #TODO update data
 ]
