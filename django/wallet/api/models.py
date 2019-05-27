@@ -1,18 +1,6 @@
 from django import forms
 
 
-class Transaction(forms.Form):
-    private_key = forms.CharField(required=True)
-    public_key = forms.CharField(required=True)
-    sender = forms.CharField(required=True)
-    receive = forms.CharField(required=True)
-    amount = forms.IntegerField(required=True)
-
-    def to_json(self):
-        return "privateKey: ${self['private_key'].data}, publicKey: {self['public_key'].data}, sender: {self[" \
-               "'sender'].data}, receive: {self['receive'].data}, amount: {self['amount'].data} "
-
-
 class User(forms.Form):
     private_key = forms.CharField(required=True)
     public_key = forms.CharField(required=True)
@@ -22,3 +10,15 @@ class User(forms.Form):
 
     def get_amount(self):
         return self["public_key"]  # TODO
+
+
+class Transaction(forms.Form):
+    private_key = forms.CharField(required=True)
+    public_key = forms.CharField(required=True)
+    sender = forms.CharField(required=True)
+    receive = forms.CharField(required=True)
+    amount = forms.IntegerField(required=True)
+
+    def to_json(self, user: User):
+        return f"privateKey: {user['private_key'].data}, publicKey: {user['public_key'].data}, " \
+            f"sender: {self['sender'].data}, receive: {self['receive'].data}, amount: {self['amount'].data}"
