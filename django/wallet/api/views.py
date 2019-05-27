@@ -11,9 +11,8 @@ def index(request):
 
 def send_from(request):
     transaction = Transaction(request.POST or None)
-
     if transaction.is_valid():
         # TODO: send transaction to blockchain
         send = True
 
-    return render(request, 'test_from.html', locals())
+    return render(request, 'transaction.html', locals())

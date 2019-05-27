@@ -1,10 +1,9 @@
 from django import forms
 from django.db import models
-from datetime import datetime
+from django.utils import timezone
 
 
 class Transaction(forms.Form):
-    date = forms.DateTimeField(required=True)
     sender = forms.CharField(required=True)
     receive = forms.CharField(required=True)
     amount = forms.IntegerField(required=True)

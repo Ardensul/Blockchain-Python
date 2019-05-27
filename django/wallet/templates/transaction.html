@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>From</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='{% static "style.css" %}'>
+</head>
+<body>
+{% if envoi %}Transaction send !{% endif %}
+<div class="mainTransaction">
+    <form action="{% url "from" %}" method="post">
+        {% csrf_token %}
+        {{ transaction.as_p }}
+        <input type="submit" value="Make transaction"/>
+    </form>
+</div>
+</body>
+</html>
