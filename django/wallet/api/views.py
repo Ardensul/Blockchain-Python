@@ -12,7 +12,8 @@ def index(request):
 def send_from(request):
     transaction = Transaction(request.POST or None)
     if transaction.is_valid():
-        # TODO: send transaction to blockchain
         send = True
+        results = transaction.to_json()
+        # TODO: send transaction to blockchain
 
     return render(request, 'transaction.html', locals())
