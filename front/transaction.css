@@ -3,7 +3,7 @@ body
     background-color: moccasin;
 }
 
-.wallet
+.mainTransaction
 {
     margin: auto;
     margin-top: 1%;
@@ -15,15 +15,14 @@ body
     background-color: blanchedalmond;
 }
 
-.transaction
+
+table
 {
     margin: auto;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    text-align: center;
-    width: 50%;
-    height: 50%;
-    background-color:bisque;
+}
+
+td
+{
     padding: 5%;
-    min-width: 275px;
+    width: 50%
 }

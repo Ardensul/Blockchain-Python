@@ -1,0 +1,23 @@
+body {
+    background-color: moccasin;
+}
+
+.mainTransaction {
+    margin: 1% auto auto;
+    min-width: 400px;
+    padding: 5%;
+    text-align: center;
+    width: 50%;
+    height: 50%;
+    background-color: blanchedalmond;
+}
+
+
+table {
+    margin: auto;
+}
+
+td {
+    padding: 5%;
+    width: 50%
+}

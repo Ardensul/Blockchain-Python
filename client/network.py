@@ -1,7 +1,5 @@
 import socket, threading
 
-ENCODING = 'utf-8'
-
 def checkIfMinerRunning():
     """Kind of an obviously named function, innit ?"""
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,27 +13,28 @@ def checkIfMinerRunning():
 
 class Rx(threading.Thread):
     """Server side of the peer"""
-    def __init__(self):
+    def __init__(self, port=7777, bufsize=4096):
         threading.Thread.__init__(self, name="rx")
         self.host = "127.0.0.1"
-        self.port = 7777
+        self.port = port
+        self.bufsize = bufsize
         # Build socket during init
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((self.host, self.port))
 
     def listen(self):
         self.sock.listen()
+        print("Server started on port", self.port)
         while True:
             conn, client_addr = self.sock.accept()
+            print("Connection accepted from", client_addr[0])
             try:
-                msg = ""
                 while True:
-                    data = conn.recv(1024)
-                    msg += data.decode(ENCODING)
+                    data = conn.recv(self.bufsize)
 
                     if not data:
-                        print(client_addr, ": ", msg)
                         break
+                    print(client_addr[0], ":", data.decode())
             except:
                 continue
             finally:
@@ -56,15 +55,24 @@ class Tx(threading.Thread):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.sock.connect((self.remote, self.rport))
+            print("Connected to", self.remote)
         except ConnectionRefusedError:
-            print("Unable to connect to target", self.remote)
+            print("Unable to connect to", self.remote)
 
     def send(self, msg):
-        self.sock.send(msg.encode(ENCODING))
+        self.sock.send( msg.encode() )
 
     def close(self):
         self.sock.shutdown(socket.SHUT_WR)
         self.sock.close()
+
+    def status(self):
+        print("Tx to", self.remote, "on port", self.rport)
+        try:
+            self.send("ping")
+            print("Status: alive")
+        except:
+            print("Status: dead")
 
 class Endpoint:
     """The peer itself, in all its glory of a few hundred bytes"""
