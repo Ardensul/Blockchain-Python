@@ -7,10 +7,11 @@
     <link rel='stylesheet' type='text/css' media='screen' href='{% static "style.css" %}'>
 </head>
 <body>
+{{ pu }}
 <div class="mainTransaction">
-    <form action="{% url "from" %}" method="post">
+    <form method="post">
         {% csrf_token %}
-        {{ transaction.as_p }}
+        {{ form.as_table }}
         <input type="submit" value="Make transaction"/>
     </form>
     {% if send %}Transaction send !{{ results }}{% endif %}
