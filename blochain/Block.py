@@ -6,6 +6,9 @@ class Block:
         self.id = id
         self.previousHash = prevhash
         self.data = data
+        docpre = open("../test/workproof.conf","r")
+        self.prefix = docpre.readline()
+        docpre.close()
         self.workProof = workProof
         if currentHash != '':
             self.currentHash = currentHash
@@ -31,3 +34,4 @@ class Block:
         block = block.encode(encoding='Utf-8')
         hash_objet = sha256(block).hexdigest()
         return hash_objet
+

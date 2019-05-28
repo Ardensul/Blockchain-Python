@@ -13,6 +13,7 @@ class Chain:
         else:
             if len(self.blockChain) == 1:
                 self.blockChain[0] = Block("genesis")
+                self.saveChain()
 
     def generateBlock(self,data):
         block = Block(data,self.blockChain[-1].currentHash,self.blockChain[-1].id+1)
@@ -44,6 +45,7 @@ class Chain:
                 self.blockChain[i] = Block(data["block"][i]["data"],data["block"][i]["previousHash"],data["block"][i]["id"],data["block"][i]["workProof"],data["block"][i]["currentHash"])
             else:
                 self.blockChain.append(Block(data["block"][i]["data"],data["block"][i]["previousHash"],data["block"][i]["id"],data["block"][i]["workProof"],data["block"][i]["currentHash"]))
+        saveFile.close()
 
     def saveChain(self):
         saveFile = open(self.path,'w')
@@ -52,4 +54,12 @@ class Chain:
         for i in range(len(self.blockChain)):
             data["block"].append(self.blockChain[i].__dict__)
         json.dump(data,saveFile)
+        saveFile.close()
         return True
+
+test = Chain()
+
+for i in range(5):
+    print("minage block : "+str(i))
+    test.generateBlock(i)
+    print("Le block n°"+str(i)+" a été miné")
