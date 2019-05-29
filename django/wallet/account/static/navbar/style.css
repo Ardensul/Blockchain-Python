@@ -9,7 +9,7 @@ a {
     text-decoration: none;
 }
 
-.navbar {
+.nav-bar {
     background-color: #242424;
     height: 60px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
@@ -17,7 +17,7 @@ a {
     color: white;
 }
 
-.navtitle {
+.nav-title {
     float: left;
     height: 100%;
     padding: 0 20px;
@@ -25,7 +25,7 @@ a {
     font-weight: 300;
 }
 
-.navlink {
+.nav-link {
     float: left;
     height: 100%;
     padding: 0 20px;
@@ -35,10 +35,10 @@ a {
     float: right;
 }
 
-.navlink.active {
+.nav-link.active {
     background-color: #484848;
 }
 
-.navlink:hover {
+.nav-link:hover {
     background-color: #484848;
 }

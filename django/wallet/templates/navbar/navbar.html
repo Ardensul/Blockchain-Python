@@ -11,16 +11,16 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="navbar">
-    <span class="navtitle">Wallet</span>
+<div class="nav-bar">
+    <span class="nav-title">Wallet</span>
     {% if login %}
-        <a class="navlink {% if patch == "index" %}active{% endif %}" href="{% url "index" %}">My wallet</a>
-        <a class="navlink {% if patch == "transaction" %}active{% endif %}" href="{% url "logout" %}">Make a
+        <a class="nav-link {% if patch == "index" %}active{% endif %}" href="{% url "index" %}">My wallet</a>
+        <a class="nav-link {% if patch == "transaction" %}active{% endif %}" href="{% url "logout" %}">Make a
             transaction</a>
     {% endif %}
-    <a class="navlink {% if patch == "new_key" %}active{% endif %}" href="#">Create a new key</a>
+    <a class="nav-link {% if patch == "new_key" %}active{% endif %}" href="#">Create a new key</a>
     {% if login %}
-        <a class="navlink right" href="#">Log out</a>
+        <a class="nav-link right" href="#">Log out</a>
     {% endif %}
 </div>
 {% block body %}
