@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from api.models import Transaction, User, PayingCard
+from account.models import Transaction, User, PayingCard
 
 
 def login(request):

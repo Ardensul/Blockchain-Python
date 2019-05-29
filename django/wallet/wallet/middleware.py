@@ -3,7 +3,7 @@ import re
 from django.conf import settings
 from django.shortcuts import redirect
 
-from api.models import User
+from account.models import User
 
 EXEMPT_URLS = [re.compile(settings.LOGIN_URL)]
 if hasattr(settings, 'LOGIN_EXEMPT_URLS'):
@@ -23,7 +23,7 @@ class LoginMiddleware:
         assert hasattr(request, "user")
         path = request.path_info
         url_is_exempt = any(url.match(path) for url in EXEMPT_URLS)
-        if url_is_exempt:
+        if url_is_exempt and path != "/":
             return None
         else:
             try:
