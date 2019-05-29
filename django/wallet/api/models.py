@@ -1,5 +1,7 @@
 import rsa
 from django import forms
+from django.core.validators import RegexValidator
+
 
 
 class User(forms.Form):
@@ -39,3 +41,9 @@ class Transaction(forms.Form):
     def to_json(self, user: User):
         return f"publicKey: {user['public_key'].data}, from: TODO, to: {self['receive'].data}, " \
             f"amount: {self['amount'].data}"  # FIXME
+
+class PayingCard(forms.Form):
+    print("hello", RegexValidator(r'[A-Z]{2}[0-9]{2}\s([0-9]{4}\s){5}[0-9]{3}$', "not an IBAN"))
+    IBAN = forms.CharField(required=True, max_length=33, validators=[RegexValidator(r'[A-Z]{2}[0-9]{2}\s([0-9]{4}\s){5}[0-9]{3}', "not an IBAN")])
+    BIC = forms.CharField(required=True, max_length=12)
+    amount = forms.IntegerField(required=True)

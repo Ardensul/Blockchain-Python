@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
-from api.models import Transaction, User
+from api.models import Transaction, User, PayingCard
 from api.utils import middleware_login
 
 
@@ -35,4 +35,10 @@ def send_from(request):
         # results = transaction.to_json()
         # TODO: send transaction to blockchain
 
+    return render(request, 'transaction.html', locals())
+
+
+def send(request):
+    transaction = Transaction(None)
+    card = PayingCard(request.POST or None)
     return render(request, 'transaction.html', locals())
