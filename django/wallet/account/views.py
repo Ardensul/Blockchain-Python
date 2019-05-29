@@ -20,6 +20,7 @@ def logout(request):
 
 
 def transaction(request):
-    transaction_from = Transaction(None)
+    transaction_form = Transaction(None)
     card_form = PayingCard(request.POST or None)
-    return render(request, 'transaction.html', {"login": True}, locals())
+    return render(request, 'transaction.html',
+                  {"login": True, "transaction_form": transaction_form, "card_form": card_form})

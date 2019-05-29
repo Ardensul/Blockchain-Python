@@ -17,10 +17,10 @@
         <a class="nav-link {% if patch == "index" %}active{% endif %}" href="{% url "index" %}">My wallet</a>
         <a class="nav-link {% if patch == "transaction" %}active{% endif %}" href="{% url "logout" %}">Make a
             transaction</a>
-    {% endif %}
-    <a class="nav-link {% if patch == "new_key" %}active{% endif %}" href="#">Create a new key</a>
-    {% if login %}
+
         <a class="nav-link right" href="#">Log out</a>
+    {% else %}
+        <a class="nav-link {% if patch == "new_key" %}active{% endif %}" href="#">Create a new key</a>
     {% endif %}
 </div>
 {% block body %}
