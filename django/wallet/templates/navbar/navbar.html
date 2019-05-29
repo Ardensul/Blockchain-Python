@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Wallet</title>
+
+    <link href="{% static "navbar/style.css" %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="navbar">
+    <span class="navtitle">Wallet</span>
+    {% if login %}
+        <a class="navlink {% if patch == "index" %}active{% endif %}" href="#">My wallet</a>
+        <a class="navlink {% if patch == "transaction" %}active{% endif %}" href="#">Make a transaction</a>
+
+        <a class="navlink right" href="#">Log out</a>
+    {% endif %}
+</div>
+{% block body %}
+{% endblock %}
+</body>
+</html>

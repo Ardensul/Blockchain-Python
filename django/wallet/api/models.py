@@ -21,11 +21,18 @@ class User(forms.Form):
         return self["public_key"]  # TODO
 
     def check_key(self):
-        # noinspection SpellCheckingInspection
-        message = "UUS1D58gipJxeynVyLCs1phzgj7w18nBb8dCLaJM".encode("utf8")
-        message_encrypt = rsa.encrypt(message, rsa.PublicKey.load_pkcs1(self["public_key"].data))
-        message_decrypt = rsa.decrypt(message_encrypt, rsa.PrivateKey.load_pkcs1(self["private_key"].data))
-        return message == message_decrypt
+        # noinspection PyBroadException
+        try:
+            # noinspection SpellCheckingInspection
+            message = "UUS1D58gipJxeynVyLCs1phzgj7w18nBb8dCLaJM".encode("utf8")
+            message_encrypt = rsa.encrypt(message, rsa.PublicKey.load_pkcs1(self["public_key"].data))
+            message_decrypt = rsa.decrypt(message_encrypt, rsa.PrivateKey.load_pkcs1(self["private_key"].data))
+            return message == message_decrypt
+        except:
+            return False
+
+    def export(self):
+        return {"public_key": self["public_key"].data, "private_key": self["private_key"].data}
 
     @staticmethod
     def create_key():
@@ -39,8 +46,10 @@ class Transaction(forms.Form):
     amount = forms.IntegerField(required=True)
 
     def to_json(self, user: User):
-        return f"publicKey: {user['public_key'].data}, from: TODO, to: {self['receive'].data}, " \
-            f"amount: {self['amount'].data}"  # FIXME
+        message = f"from: {user.get_unique_key()}, to: {self['receive'].data}, amount: {self['amount'].data}"
+        hash_message = rsa.encrypt(message.encode("utf8"), user.get_public_key())
+        return f"privateKey: {user['private_key'].data}, " + message + f", hash: {hash_message}"
+
 
 class PayingCard(forms.Form):
     print("hello", RegexValidator(r'[A-Z]{2}[0-9]{2}\s([0-9]{4}\s){5}[0-9]{3}$', "not an IBAN"))

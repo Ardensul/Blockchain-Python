@@ -5,15 +5,7 @@
         <div class="card">
             <form method="post">
                 {% csrf_token %}
-                {{ transaction_form.as_table }}
-                <input type="submit" value="Make transaction"/>
-            </form>
-            {% if send %}Transaction send !{{ results }}{% endif %}
-        </div>
-        <div class="tiers">
-            <form method="post">
-                {% csrf_token %}
-                {{ card_form.as_table }}
+                {{ form.as_table }}
                 <input type="submit" value="Make transaction"/>
             </form>
             {% if send %}Transaction send !{{ results }}{% endif %}
