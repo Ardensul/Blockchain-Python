@@ -117,6 +117,6 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = "/login/"
 
-LOGIN_EXEMPT_URLS = (
+LOGIN_EXEMPT_URLS = [
     "/logout/"
-)
+]

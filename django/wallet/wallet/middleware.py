@@ -23,7 +23,7 @@ class LoginMiddleware:
         assert hasattr(request, "user")
         path = request.path_info
         url_is_exempt = any(url.match(path) for url in EXEMPT_URLS)
-        if url_is_exempt and path != "/":
+        if url_is_exempt:
             return None
         else:
             try:
