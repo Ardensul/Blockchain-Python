@@ -117,6 +117,9 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = "/login/"
 
-LOGIN_EXEMPT_URLS = [
-    "/logout/"
+EXEMPT_URLS = [
+    "/logout/",
+    "/new-key/"
 ]
+
+NAME_COMPANY_KEY_FILES = "id_rsa"

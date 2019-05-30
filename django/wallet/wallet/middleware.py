@@ -6,8 +6,8 @@ from django.shortcuts import redirect
 from account.models import User
 
 EXEMPT_URLS = [re.compile(settings.LOGIN_URL)]
-if hasattr(settings, 'LOGIN_EXEMPT_URLS'):
-    EXEMPT_URLS += [re.compile(url) for url in settings.LOGIN_EXEMPT_URLS]
+if hasattr(settings, 'EXEMPT_URLS'):
+    EXEMPT_URLS += [re.compile(url) for url in settings.EXEMPT_URLS]
 
 
 class LoginMiddleware:
