@@ -1,9 +1,9 @@
-{% extends 'navbar/navbar.html' %}
+{% extends 'navbar.html' %}
 
 {% block body %}
     <div class="main-transaction">
         <div class="card">
-            <form method="post">
+            <form action="{{ request.path }}send" method="post">
                 {% csrf_token %}
                 {{ transaction_form.as_table }}
                 <input type="submit" value="Make transaction"/>
@@ -11,7 +11,7 @@
             {% if send %}Transaction send !{{ results }}{% endif %}
         </div>
         <div class="tiers">
-            <form method="post">
+            <form action="{{ request.path }}payment" method="post">
                 {% csrf_token %}
                 {{ card_form.as_table }}
                 <input type="submit" value="Make transaction"/>
