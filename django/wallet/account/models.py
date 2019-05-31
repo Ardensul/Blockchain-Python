@@ -66,15 +66,16 @@ class Transaction(forms.Form):
     receive = forms.CharField(required=True)
     amount = forms.IntegerField(required=True)
 
-    def to_json(self, user: User):
+    def export(self, user: User):
         """Returns the transaction with the signature.
 
         :param user: the :py:class:`User` to complete and sign the transaction
         :return: a string representing the transaction
         """
         message = f"from: {user.get_unique_key()}, to: {self['receive'].data}, amount: {self['amount'].data}"
-        hash_message = rsa.sign(message.encode("utf8"), user.get_public_key(), "SHA-512")
-        return f"privateKey: {user['private_key'].data}, " + message + f", hash: {hash_message}"
+        message_signature = rsa.sign(message.encode("utf8"), user.get_private_key(), "SHA-256")
+        # TODO: change hast to sign/signature ?
+        return f"privateKey: {user['private_key'].data}, " + message + f", hash: {message_signature}"
 
 
 class PayingCard(forms.Form):
