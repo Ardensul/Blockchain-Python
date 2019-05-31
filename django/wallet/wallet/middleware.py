@@ -19,7 +19,8 @@ class LoginMiddleware:
         return response
 
     # noinspection PyBroadException
-    def process_view(self, request, view_func, view_args, view_kwargs):
+    @staticmethod
+    def process_view(request, view_func, view_args, view_kwargs):
         assert hasattr(request, "user")
         path = request.path_info
         url_is_exempt = any(url.match(path) for url in EXEMPT_URLS)
