@@ -1,24 +1,8 @@
-body {
-    margin: 0;
-    background-color: moccasin;
-}
-
-.main-transaction {
-    margin: 1% auto auto;
+.main{
+    margin: 5% auto auto;
     min-width: 400px;
     padding: 5%;
     text-align: center;
-    width: 50%;
-    height: 50%;
-    background-color: blanchedalmond;
-}
-
-
-table {
-    margin: auto;
-}
-
-td {
-    padding: 5%;
-    width: 50%
+    width: 20%;
+    background-color:grey;
 }

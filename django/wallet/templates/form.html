@@ -1,12 +1,11 @@
 {% extends 'navbar.html' %}
-
 {% block body %}
-    <div class="main-transaction">
+    <div class="main">
         <div class="card">
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_table }}
-                <input type="submit" value="Make transaction"/>
+                <input type="submit" value="Log in"/>
             </form>
             {% if send %}Transaction send !{{ results }}{% endif %}
         </div>
