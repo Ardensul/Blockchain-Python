@@ -1,3 +1,5 @@
+import hashlib
+
 import rsa
 from django import forms
 from django.core.validators import RegexValidator
@@ -22,8 +24,14 @@ class User(forms.Form):
         """
         return rsa.PublicKey.load_pkcs1(self["public_key"].data)
 
-    def get_unique_key(self):
-        return self["public_key"]  # TODO
+    def get_unique_key(self):  # FIXME
+        key = self._sha256(self["private_key"].data)
+        key_sha256 = self._ripemd160(key)
+        key = self._sha256(key_sha256)
+        key = self._sha256(key)
+        key = key_sha256 + key[0:4]
+        key = self._md5(key)
+        return key
 
     def get_amount(self):
         return self["public_key"]  # TODO
@@ -59,6 +67,24 @@ class User(forms.Form):
         (public, private) = rsa.newkeys(512)
         return {"public": public.save_pkcs1().decode('utf8'),
                 "private": private.save_pkcs1().decode('utf8')}
+
+    @staticmethod
+    def _sha256(message):
+        hash1 = hashlib.sha256()
+        hash1.update(message.encode("utf-8"))
+        return hash1.hexdigest()
+
+    @staticmethod
+    def _md5(message):
+        hash1 = hashlib.md5()
+        hash1.update(message.encode("utf-8"))
+        return hash1.hexdigest()
+
+    @staticmethod
+    def _ripemd160(message):
+        hash1 = hashlib.new("ripemd160")
+        hash1.update(message.encode("utf-8"))
+        return hash1.hexdigest()
 
 
 class Transaction(forms.Form):
