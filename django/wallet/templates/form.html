@@ -4,7 +4,9 @@
         <div class="card">
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_table }}
+                <table>
+                    {{ form.as_table }}
+                </table>
                 <input type="submit" value="Log in"/>
             </form>
             {% if send %}Transaction send !{{ results }}{% endif %}

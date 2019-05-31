@@ -1,8 +1,27 @@
 .main{
     margin: 5% auto auto;
     min-width: 400px;
-    padding: 5%;
+    padding: 4%;
     text-align: center;
     width: 20%;
     background-color:grey;
 }
+
+table{
+    margin: auto;
+    margin-bottom: 10%;
+}
+
+textarea{
+    height: 20px;
+    width: 75%;
+}
+
+th{
+    float: left;
+}
+
+td{
+    float: right;
+}
+
