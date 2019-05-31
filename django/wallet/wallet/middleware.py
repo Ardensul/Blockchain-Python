@@ -18,9 +18,18 @@ class LoginMiddleware:
         response = self.get_response(request)
         return response
 
-    # noinspection PyBroadException
+    # noinspection PyBroadException,PyUnusedLocal
     @staticmethod
     def process_view(request, view_func, view_args, view_kwargs):
+        """Checks that the requested view is public or that the user is logged in otherwise,
+        redirects the user to the login page.
+
+        :param request: Object containing the web request
+        :param view_func: django python function
+        :param view_args: list of positional parameters that will be transmitted to the view
+        :param view_kwargs: dictionary of named parameters that will be transmitted to the view
+        :return: none if the user has the right to access the view otherwise render to the login page
+        """
         assert hasattr(request, "user")
         path = request.path_info
         url_is_exempt = any(url.match(path) for url in EXEMPT_URLS)
