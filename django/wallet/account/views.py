@@ -4,11 +4,16 @@ from account.models import Transaction, User, PayingCard
 from account.utils import get_company_account
 
 
-def index(request):
+def index(request):  # TODO
     return render(request, 'form.html', {"login": True})
 
 
 def login(request):
+    """View of the login page.
+
+    :param request: Object containing the web request
+    :return: a render whose content contains a from template
+    """
     form = User(request.POST or None)
     if form.is_valid():
         if form.check_key():
@@ -20,6 +25,11 @@ def login(request):
 
 
 def logout(request):
+    """View to disconnect the user.
+
+    :param request: Object containing the web request
+    :return: a redirection to the index
+    """
     try:
         del request.session["user"]
     finally:
@@ -27,12 +37,22 @@ def logout(request):
 
 
 def new_key(request):
+    """View generating new RSA keys
+
+    :param request: Object containing the web request
+    :return: a render whose content contains a *** template TODO
+    """
     key = User.create_key()
     print(key)
-    return render(request, 'form.html')
+    return render(request, 'form.html')  # TODO
 
 
 def transaction(request):
+    """View allowing the user to create a transaction or convert money to cryptomonnaise.
+
+    :param request: Object containing the web request
+    :return: a render whose content contains a transaction template
+    """
     transaction_form = Transaction(None)
     card_form = PayingCard(None)
 

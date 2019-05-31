@@ -7,6 +7,10 @@ from account.models import User
 
 # noinspection PyUnresolvedReferences
 def get_company_account():
+    """Read the company identifiers.
+
+    :return: a dictionary with private and public key
+    """
     path = settings.NAME_COMPANY_KEY_FILES
     private_path = os.path.join(os.path.dirname(__file__), f"../data/{path}")
     public_path = os.path.join(os.path.dirname(__file__), f"../data/{path}.pub")
