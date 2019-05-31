@@ -1,27 +1,25 @@
-.main{
+.main {
     margin: 5% auto auto;
     min-width: 400px;
     padding: 4%;
     text-align: center;
     width: 20%;
-    background-color:grey;
+    background-color: grey;
 }
 
-table{
-    margin: auto;
-    margin-bottom: 10%;
+table {
+    margin: auto auto 10%;
 }
 
-textarea{
+textarea {
     height: 20px;
     width: 75%;
 }
 
-th{
+th {
     float: left;
 }
 
-td{
+td {
     float: right;
 }
-
