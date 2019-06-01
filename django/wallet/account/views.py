@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from account.models import Transaction, User, PayingCard
+from account.models import Transaction, User, BankTransfer
 from account.utils import get_company_account
 
 
@@ -54,7 +54,7 @@ def transaction(request):
     :return: a render whose content contains a transaction template
     """
     transaction_form = Transaction(None)
-    card_form = PayingCard(None)
+    bank_form = BankTransfer(None)
 
     # noinspection PyShadowingNames
     login = True
@@ -74,7 +74,7 @@ def send_transaction(request):
 
 def send_payment(request):
     if request.method == "POST":
-        payment_form = PayingCard(request.POST)
+        payment_form = BankTransfer(request.POST)
 
         if payment_form.is_valid():
             user = User(request.session["user"])

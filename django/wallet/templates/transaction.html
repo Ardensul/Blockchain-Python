@@ -13,7 +13,7 @@
         <div class="tiers">
             <form action="{{ request.path }}payment" method="post">
                 {% csrf_token %}
-                {{ card_form.as_table }}
+                {{ bank_form.as_table }}
                 <input type="submit" value="Make transaction"/>
             </form>
             {% if send %}Transaction send !{{ results }}{% endif %}

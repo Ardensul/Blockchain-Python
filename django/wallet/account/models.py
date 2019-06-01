@@ -25,11 +25,11 @@ class User(forms.Form):
         return rsa.PublicKey.load_pkcs1(self["public_key"].data)
 
     def get_unique_key(self):  # FIXME
-        key = self._sha256(self["private_key"].data)
-        key_sha256 = self._ripemd160(key)
-        key = self._sha256(key_sha256)
+        key = self._sha256(self["public_key"].data)
+        key_ripemd160 = self._ripemd160(key)
+        key = self._sha256(key_ripemd160)
         key = self._sha256(key)
-        key = key_sha256 + key[0:4]
+        key = key_ripemd160 + key[0:4]
         key = self._md5(key)
         return key
 
@@ -70,21 +70,21 @@ class User(forms.Form):
 
     @staticmethod
     def _sha256(message):
-        hash1 = hashlib.sha256()
-        hash1.update(message.encode("utf-8"))
-        return hash1.hexdigest()
+        sha256_hash = hashlib.sha256()
+        sha256_hash.update(message.encode("utf-8"))
+        return sha256_hash.hexdigest()
 
     @staticmethod
     def _md5(message):
-        hash1 = hashlib.md5()
-        hash1.update(message.encode("utf-8"))
-        return hash1.hexdigest()
+        md5_hash = hashlib.md5()
+        md5_hash.update(message.encode("utf-8"))
+        return md5_hash.hexdigest()
 
     @staticmethod
     def _ripemd160(message):
-        hash1 = hashlib.new("ripemd160")
-        hash1.update(message.encode("utf-8"))
-        return hash1.hexdigest()
+        ripemd160_hash = hashlib.new("ripemd160")
+        ripemd160_hash.update(message.encode("utf-8"))
+        return ripemd160_hash.hexdigest()
 
 
 class Transaction(forms.Form):
@@ -104,7 +104,8 @@ class Transaction(forms.Form):
         return f"privateKey: {user['private_key'].data}, " + message + f", hash: {message_signature}"
 
 
-class PayingCard(forms.Form):
+class BankTransfer(forms.Form):
+    """Form and representation of a bank transfer."""
     IBAN = forms.CharField(required=True, max_length=33,
                            validators=[RegexValidator(r'[A-Z]{2}[0-9]{2}\s([0-9]{4}\s){5}[0-9]{3}', "not an IBAN")])
     BIC = forms.CharField(required=True, max_length=12)
