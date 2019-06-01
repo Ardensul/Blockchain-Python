@@ -13,13 +13,9 @@ table {
 
 textarea {
     height: 20px;
-    width: 75%;
-}
-
-th {
-    float: left;
-}
-
-td {
-    float: right;
+    min-width : 100px;
+    min-height : 20px;
+    max-width : 200px;
+    max-height : 50px;
+    overflow-y: scroll;
 }
