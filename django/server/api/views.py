@@ -21,7 +21,6 @@ def index(request):
 
     results = []
     for addr in Address.objects.all():
-        print(addr.address)
         results.append(addr.address)
 
     print(results)

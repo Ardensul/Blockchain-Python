@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from account.models import Transaction, User, BankTransfer
+from account.models import Transaction, User, BankTransfer, Network
 from account.utils import get_company_account
 
 
@@ -20,6 +20,7 @@ def login(request):
             u = form.export()
             request.session["user"] = form.export()
             return redirect("/")
+    input_message = "Log in"
     return render(request, 'form.html', locals())
 
 
@@ -57,13 +58,13 @@ def transaction(request):
     try:
         send_transaction_success = request.session["send_transaction"]
         del request.session["send_transaction"]
-    except:
+    except KeyError:
         print("no transaction")
 
     try:
         send_payment_success = request.session["send_payment"]
         del request.session["send_transaction"]
-    except:
+    except KeyError:
         print("no payment")
 
     # noinspection PyShadowingNames
@@ -77,8 +78,8 @@ def send_transaction(request):
 
         if transaction_form.is_valid():
             user = User(request.session["user"])
-            print("TODO")  # TODO: send transaction to miner
-            request.session["send_transaction"] = True
+            success = Network().send(transaction_form.export(user))
+            request.session["send_transaction"] = success
         else:
             request.session["send_transaction"] = False
 
