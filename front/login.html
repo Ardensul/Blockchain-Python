@@ -21,8 +21,68 @@
                         <td><input type="password"></td>
                     </tr>
                 </table>
-                <input type="submit">
+				<input id="button" type="submit">
             </form>
         </div>
+		<div id="dimmer"></div>
+		<div id="loader">
+			<div id="spinner"></div>
+		</div>
+		<script>
+			window.addEventListener("resize", resizeLoader);
+		
+			var sub = document.getElementById("button");
+            sub.onclick = function(e) {
+				e.preventDefault();
+				showLoader();
+            }
+			
+			function showLoader()
+			{
+				/* Activate dimmer */
+				document.getElementById("dimmer").style.display = "block";
+				
+				/* Set up loader */
+				document.getElementById("loader").style.display = "block";
+				
+				resizeLoader();
+			}
+			
+			function resizeLoader()
+			{
+				/* Get bigger dimension */
+				var viewPortWidth;
+				var viewPortHeight;
+
+				if (typeof window.innerWidth != 'undefined')
+				{
+					viewPortWidth = window.innerWidth,
+					viewPortHeight = window.innerHeight
+				}
+				else if (typeof document.documentElement != 'undefined'	&& typeof document.documentElement.clientWidth != 'undefined' && document.documentElement.clientWidth != 0)
+				{
+					viewPortWidth = document.documentElement.clientWidth,
+					viewPortHeight = document.documentElement.clientHeight
+				}
+				
+				var d;
+				
+				if (viewPortWidth > viewPortHeight) { d = viewPortWidth; }
+				else { d = viewPortHeight; }
+			
+				/* Set loader size */
+				document.getElementById("loader").style.width = ((d * 5)/100) + "px";
+				document.getElementById("loader").style.height = ((d * 5)/100) + "px";
+				
+				document.getElementById("spinner").style.width = ((d * 5)/100) + "px";
+				document.getElementById("spinner").style.height = ((d * 5)/100) + "px";
+				
+				/* Reposition loader */
+				var pageRect = document.body.getBoundingClientRect();
+				var loaderRect = document.getElementById("loader").getBoundingClientRect();
+				document.getElementById("loader").style.top = ( (pageRect.bottom / 2) - ( (loaderRect.bottom - loaderRect.top) / 2 ) ) + "px";
+				document.getElementById("loader").style.left = ( (pageRect.right / 2) - ( (loaderRect.right - loaderRect.left) / 2 ) ) + "px";
+			}
+	</script>
     </body>
 </html>
