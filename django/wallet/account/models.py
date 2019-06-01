@@ -1,7 +1,11 @@
 import hashlib
+import random
+import socket
 
+import requests
 import rsa
 from django import forms
+from django.conf import settings
 from django.core.validators import RegexValidator
 
 
@@ -44,7 +48,7 @@ class User(forms.Form):
         # noinspection PyBroadException
         try:
             # noinspection SpellCheckingInspection
-            message = "UUS1D58gipJxeynVyLCs1phzgj7w18nBb8dCLaJM".encode("utf8")
+            message = "UUS1D58gipJxeynVyLCs1phzgj7w18nBb8dCLaJM".encode()
             message_encrypt = rsa.encrypt(message, self.get_public_key())
             message_decrypt = rsa.decrypt(message_encrypt, self.get_private_key())
             return message == message_decrypt
@@ -76,7 +80,7 @@ class User(forms.Form):
         :return: a string containing the hasher message in hexadecimal
         """
         sha256_hash = hashlib.sha256()
-        sha256_hash.update(message.encode("utf-8"))
+        sha256_hash.update(message.encode())
         return sha256_hash.hexdigest()
 
     @staticmethod
@@ -87,7 +91,7 @@ class User(forms.Form):
         :return: a string containing the hasher message in hexadecimal
         """
         md5_hash = hashlib.md5()
-        md5_hash.update(message.encode("utf-8"))
+        md5_hash.update(message.encode())
         return md5_hash.hexdigest()
 
     @staticmethod
@@ -98,7 +102,7 @@ class User(forms.Form):
         :return: a string containing the hasher message in hexadecimal
         """
         ripemd160_hash = hashlib.new("ripemd160")
-        ripemd160_hash.update(message.encode("utf-8"))
+        ripemd160_hash.update(message.encode())
         return ripemd160_hash.hexdigest()
 
 
@@ -114,9 +118,9 @@ class Transaction(forms.Form):
         :return: a string representing the transaction
         """
         message = f"from: {user.get_unique_key()}, to: {self['receive'].data}, amount: {self['amount'].data}"
-        message_signature = rsa.sign(message.encode("utf8"), user.get_private_key(), "SHA-256")
+        message_signature = rsa.sign(message.encode(), user.get_private_key(), "SHA-256")
         # TODO: change hast to sign/signature ?
-        return f"privateKey: {user['private_key'].data}, " + message + f", hash: {message_signature}"
+        return f"publicKey: {user['public_key'].data}, " + message + f", hash: {message_signature}"
 
 
 class BankTransfer(forms.Form):
@@ -125,3 +129,46 @@ class BankTransfer(forms.Form):
                            validators=[RegexValidator(r'[A-Z]{2}[0-9]{2}\s([0-9]{4}\s){5}[0-9]{3}', "not an IBAN")])
     BIC = forms.CharField(required=True, max_length=12)
     amount = forms.IntegerField(required=True)
+
+
+class Network:
+
+    def __init__(self):
+        self.web_directory_host = settings.WEB_DIRECTORY_HOST
+        self.directory_list = self._get_directory()
+
+    def _get_directory(self):
+        results = requests.get(self.web_directory_host)
+        return results.json()
+
+    def send(self, message):
+
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        return self._tx(sock, message)
+
+    def _tx(self, sock, message, try_count=0):
+        global result
+
+        host = random.choice(self.directory_list)
+        port = 7777
+
+        try:
+            sock.connect((host, port))
+            sock.send(message.encode())
+            result = True
+        except socket.error:
+            sock.close()
+
+            if try_count < 10 and len(self.directory_list) > 1:
+                try:
+                    requests.delete(self.web_directory_host, data={"address": host})
+                finally:
+                    self.directory_list.remove(host)
+                    result = self._tx(sock, message, try_count + 1)
+            else:
+                result = False
+        finally:
+            sock.close()
+
+        return result

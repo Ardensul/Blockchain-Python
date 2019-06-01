@@ -7,7 +7,7 @@
             <table>
                 {{ form.as_table }}
             </table>
-            <input type="submit" value="Log in"/>
+            <input type="submit" value="{{ input_message }}"/>
         </form>
         {% if send %}Transaction send !{{ results }}{% endif %}
     </div>

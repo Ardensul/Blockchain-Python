@@ -20,6 +20,7 @@ def login(request):
             u = form.export()
             request.session["user"] = form.export()
             return redirect("/")
+    input_message = "Log in"
     return render(request, 'form.html', locals())
 
 
