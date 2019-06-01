@@ -1,4 +1,5 @@
 import hashlib
+import json
 import logging
 import random
 import socket
@@ -185,8 +186,9 @@ class Network:
             sock.close()
 
             if try_count < 10 and len(self.directory_list) > 1:
+                data = json.dumps({"address": host})
                 try:
-                    requests.delete(self.web_directory_host, data={"address": host})
+                    requests.delete(self.web_directory_host, data=data)
                 finally:
                     self.directory_list.remove(host)
                     result = self._tx(sock, message, try_count + 1)

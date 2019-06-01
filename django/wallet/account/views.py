@@ -5,7 +5,9 @@ from account.utils import get_company_account
 
 
 def index(request):  # TODO
-    return render(request, 'wallet.html', {"login": True})
+    user = User(request.session["user"])
+    user_address = user.get_unique_key()
+    return render(request, 'wallet.html', {"login": True, "user_address": user_address})
 
 
 def login(request):
