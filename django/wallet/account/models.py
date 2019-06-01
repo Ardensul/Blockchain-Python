@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import random
 import socket
 
@@ -7,6 +8,8 @@ import rsa
 from django import forms
 from django.conf import settings
 from django.core.validators import RegexValidator
+
+logger = logging.getLogger(__name__)
 
 
 class User(forms.Form):
@@ -132,22 +135,43 @@ class BankTransfer(forms.Form):
 
 
 class Network:
-
     def __init__(self):
+        """Network class builder"""
         self.web_directory_host = settings.WEB_DIRECTORY_HOST
         self.directory_list = self._get_directory()
 
-    def _get_directory(self):
-        results = requests.get(self.web_directory_host)
-        return results.json()
-
     def send(self, message):
+        """Starts the procedure of sending a message to a miner.
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        :param message: a string containing the message to be sent
+        :return: a boolean based on the success of the operation
+        """
+        if len(self.directory_list) > 0:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            return self._tx(sock, message)
+        else:
+            return False
 
-        return self._tx(sock, message)
+    def _get_directory(self):
+        """Retrieves a list of miner addresses.
+
+        :return: an address list
+        """
+        try:
+            results = requests.get(self.web_directory_host)
+            return results.json()
+        except requests.exceptions.RequestException:
+            logger.error(f"Failed connection to the web directory host: {self.web_directory_host}")
+            return []
 
     def _tx(self, sock, message, try_count=0):
+        """Sends a message to a miner at random from the address list.
+
+        :param sock: a socket object
+        :param message: a string containing the message to be sent
+        :param try_count: a number of attempts made
+        :return: a boolean according to the success of the function
+        """
         global result
 
         host = random.choice(self.directory_list)
@@ -167,7 +191,9 @@ class Network:
                     self.directory_list.remove(host)
                     result = self._tx(sock, message, try_count + 1)
             else:
+                logger.error("Unable to contact a miner")
                 result = False
+
         finally:
             sock.close()
 
