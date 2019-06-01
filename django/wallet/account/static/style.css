@@ -20,7 +20,7 @@ textarea {
     overflow-y: scroll;
 }
 
-.card {
+.card, .tiers {
     padding: 4%;
     text-align: center;
     background-color: grey;
@@ -29,11 +29,9 @@ textarea {
     margin: 5% auto auto;
 }
 
-.tiers {
-    padding: 4%;
-    text-align: center;
-    background-color: grey;
-    min-width: 400px;
-    width: 20%;
-    margin: 5% auto auto;
+#my_address {
+    overflow-x: scroll;
+    width: 400px;
+    height: 40px;
+    background-color: white;
 }
