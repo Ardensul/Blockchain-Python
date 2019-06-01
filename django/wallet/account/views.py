@@ -57,13 +57,13 @@ def transaction(request):
     try:
         send_transaction_success = request.session["send_transaction"]
         del request.session["send_transaction"]
-    finally:
+    except:
         print("no transaction")
 
     try:
         send_payment_success = request.session["send_payment"]
         del request.session["send_transaction"]
-    finally:
+    except:
         print("no payment")
 
     # noinspection PyShadowingNames
@@ -98,6 +98,3 @@ def send_payment(request):
             request.session["send_payment"] = False
 
     return redirect("transaction")
-
-def my_wallet(request):
-    return render(request, 'wallet.html', {"login": True})

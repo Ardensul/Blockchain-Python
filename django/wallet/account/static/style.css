@@ -13,10 +13,10 @@ table {
 
 textarea {
     height: 20px;
-    min-width : 100px;
-    min-height : 20px;
-    max-width : 200px;
-    max-height : 50px;
+    min-width: 100px;
+    min-height: 20px;
+    max-width: 200px;
+    max-height: 50px;
     overflow-y: scroll;
 }
 
@@ -26,8 +26,7 @@ textarea {
     background-color: grey;
     min-width: 400px;
     width: 20%;
-    margin: auto;
-    margin-top: 5%;
+    margin: 5% auto auto;
 }
 
 .tiers {
@@ -36,6 +35,5 @@ textarea {
     background-color: grey;
     min-width: 400px;
     width: 20%;
-    margin: auto;
-    margin-top: 5%;
+    margin: 5% auto auto;
 }
