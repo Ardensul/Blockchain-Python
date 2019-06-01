@@ -70,18 +70,33 @@ class User(forms.Form):
 
     @staticmethod
     def _sha256(message):
+        """Hash the message in SHA-256.
+
+        :param message: a string contains the hasher message
+        :return: a string containing the hasher message in hexadecimal
+        """
         sha256_hash = hashlib.sha256()
         sha256_hash.update(message.encode("utf-8"))
         return sha256_hash.hexdigest()
 
     @staticmethod
     def _md5(message):
+        """Hash the message in MD5.
+
+        :param message: a string contains the hasher message
+        :return: a string containing the hasher message in hexadecimal
+        """
         md5_hash = hashlib.md5()
         md5_hash.update(message.encode("utf-8"))
         return md5_hash.hexdigest()
 
     @staticmethod
     def _ripemd160(message):
+        """Hash the message in RIPEMD-160.
+
+        :param message: a string contains the hasher message
+        :return: a string containing the hasher message in hexadecimal
+        """
         ripemd160_hash = hashlib.new("ripemd160")
         ripemd160_hash.update(message.encode("utf-8"))
         return ripemd160_hash.hexdigest()

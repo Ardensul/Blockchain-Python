@@ -18,7 +18,6 @@ def login(request):
     if form.is_valid():
         if form.check_key():
             u = form.export()
-            print(u, u["private_key"])
             request.session["user"] = form.export()
             return redirect("/")
     return render(request, 'form.html', locals())
@@ -43,7 +42,6 @@ def new_key(request):
     :return: a render whose content contains a *** template TODO
     """
     key = User.create_key()
-    print(key)
     return render(request, 'form.html')  # TODO
 
 
@@ -55,6 +53,18 @@ def transaction(request):
     """
     transaction_form = Transaction(None)
     bank_form = BankTransfer(None)
+
+    try:
+        send_transaction_success = request.session["send_transaction"]
+        del request.session["send_transaction"]
+    finally:
+        print("no transaction")
+
+    try:
+        send_payment_success = request.session["send_payment"]
+        del request.session["send_transaction"]
+    finally:
+        print("no payment")
 
     # noinspection PyShadowingNames
     login = True
@@ -68,8 +78,11 @@ def send_transaction(request):
         if transaction_form.is_valid():
             user = User(request.session["user"])
             print("TODO")  # TODO: send transaction to miner
-    else:
-        return redirect("transaction")
+            request.session["send_transaction"] = True
+        else:
+            request.session["send_transaction"] = False
+
+    return redirect("transaction")
 
 
 def send_payment(request):
@@ -80,5 +93,8 @@ def send_payment(request):
             user = User(request.session["user"])
             company = get_company_account()
             print("TODO")  # TODO: create payment
-    else:
-        return redirect("transaction")
+            request.session["send_payment"] = True
+        else:
+            request.session["send_payment"] = False
+
+    return redirect("transaction")
