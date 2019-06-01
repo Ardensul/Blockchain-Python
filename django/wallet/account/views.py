@@ -5,7 +5,7 @@ from account.utils import get_company_account
 
 
 def index(request):  # TODO
-    return render(request, 'form.html', {"login": True})
+    return render(request, 'wallet.html', {"login": True})
 
 
 def login(request):
@@ -98,3 +98,6 @@ def send_payment(request):
             request.session["send_payment"] = False
 
     return redirect("transaction")
+
+def my_wallet(request):
+    return render(request, 'wallet.html', {"login": True})
