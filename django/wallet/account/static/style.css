@@ -19,3 +19,24 @@ textarea {
     max-height : 50px;
     overflow-y: scroll;
 }
+
+.card {
+    padding: 4%;
+    text-align: center;
+    background-color: grey;
+    min-width: 400px;
+    width: 20%;
+    margin: auto;
+    margin-top: 5%;
+}
+
+.tiers {
+    padding: 4%;
+    text-align: center;
+    background-color: grey;
+    min-width: 400px;
+    width: 20%;
+    margin: auto;
+    margin-top: 5%;
+}
+
