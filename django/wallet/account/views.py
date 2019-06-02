@@ -61,13 +61,13 @@ def transaction(request):
         send_transaction_success = request.session["send_transaction"]
         del request.session["send_transaction"]
     except KeyError:
-        print("no transaction")
+        pass
 
     try:
         send_payment_success = request.session["send_payment"]
         del request.session["send_transaction"]
     except KeyError:
-        print("no payment")
+        pass
 
     # noinspection PyShadowingNames
     login = True

@@ -8,28 +8,24 @@
 {% block body %}
 
     <div class="tiers">
-        <form action="{{ request.path }}send" method="post">
+        <form id="transactionForm" action="{{ request.path }}send" method="post">
             {% csrf_token %}
             <table>
                 {{ transaction_form.as_table }}
             </table>
-            <input id="input" type="submit" value="Make transaction"/>
+            <input type="submit" value="Make transaction" onclick="showLoader('transactionForm')"/>
         </form>
         {% if send %}Transaction send !{{ results }}{% endif %}
     </div>
     <div class="card">
-        <form action="{{ request.path }}payment" method="post">
+        <form id="paymentForm" action="{{ request.path }}payment" method="post">
             {% csrf_token %}
             <table>
                 {{ bank_form.as_table }}
             </table>
-            <input id="input" type="submit" value="Make transaction"/>
+            <input type="submit" value="Make transaction" onclick="showLoader('paymentForm')"/>
         </form>
         {% if send %}Transaction send !{{ results }}{% endif %}
     </div>
-    <div id="dimmer"></div>
-    <div id="loader">
-        <div id="spinner"></div>
-    </div>
-    <script src="{% static "logreg.js" %}"></script>
+    <script src="{% static "loader.js" %}"></script>
 {% endblock %}
