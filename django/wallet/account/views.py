@@ -57,6 +57,9 @@ def transaction(request):
     transaction_form = Transaction(None)
     bank_form = BankTransfer(None)
 
+    send_transaction_success = None
+    send_payment_success = None
+
     try:
         send_transaction_success = request.session["send_transaction"]
         del request.session["send_transaction"]
@@ -80,8 +83,11 @@ def send_transaction(request):
 
         if transaction_form.is_valid():
             user = User(request.session["user"])
-            success = Network().send(transaction_form.export(user))
-            request.session["send_transaction"] = success
+            if user.get_amount() >= transaction_form["amount"]:
+                success = Network().send(transaction_form.export(user))
+                request.session["send_transaction"] = success
+            else:
+                request.session["send_transaction"] = False
         else:
             request.session["send_transaction"] = False
 
@@ -95,8 +101,13 @@ def send_payment(request):
         if payment_form.is_valid():
             user = User(request.session["user"])
             company = get_company_account()
-            print("TODO")  # TODO: create payment
-            request.session["send_payment"] = True
+            if company.get_amount() >= payment_form["amount"].data:
+                payment_transfert = Transaction({"receive": user.get_unique_key(),
+                                                 "amount": payment_form["amount"].data})
+                success = Network().send(payment_transfert.export(company))
+                request.session["send_payment"] = success
+            else:
+                request.session["send_payment"] = False
         else:
             request.session["send_payment"] = False
 

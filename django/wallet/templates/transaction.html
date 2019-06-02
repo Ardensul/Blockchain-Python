@@ -2,11 +2,13 @@
 {% load static %}
 
 {% block head %}
-    <link rel='stylesheet' type='text/css' media='screen' href='{% static "logreg.css" %}'>
+    <link rel='stylesheet' type='text/css' media='screen' href='{% static "loader.css" %}'>
+    {% if send_transaction_success == False or send_transaction_success == True %}
+        <script src="{% static "popup.js" %}"></script>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
-
     <div class="tiers">
         <form id="transactionForm" action="{{ request.path }}send" method="post">
             {% csrf_token %}
@@ -28,4 +30,9 @@
         {% if send %}Transaction send !{{ results }}{% endif %}
     </div>
     <script src="{% static "loader.js" %}"></script>
+    {% if send_transaction_success == False or send_transaction_success == True %}
+        <script>
+            pop("Success: {{ send_transaction_success }}")
+        </script>
+    {% endif %}
 {% endblock %}

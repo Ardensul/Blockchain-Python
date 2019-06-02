@@ -32,7 +32,7 @@ class User(forms.Form):
         """
         return rsa.PublicKey.load_pkcs1(self["public_key"].data)
 
-    def get_unique_key(self):  # FIXME
+    def get_unique_key(self):
         key = self._sha256(self["public_key"].data)
         key_ripemd160 = self._ripemd160(key)
         key = self._sha256(key_ripemd160)
@@ -113,7 +113,7 @@ class User(forms.Form):
 class Transaction(forms.Form):
     """Form and representation of a transaction."""
     receive = forms.CharField(required=True)
-    amount = forms.IntegerField(required=True)
+    amount = forms.IntegerField(required=True, min_value=1)
 
     def export(self, user: User):
         """Returns the transaction with the signature.
@@ -132,7 +132,7 @@ class BankTransfer(forms.Form):
     IBAN = forms.CharField(required=True, max_length=33,
                            validators=[RegexValidator(r'[A-Z]{2}[0-9]{2}\s([0-9]{4}\s){5}[0-9]{3}', "not an IBAN")])
     BIC = forms.CharField(required=True, max_length=12)
-    amount = forms.IntegerField(required=True)
+    amount = forms.IntegerField(required=True, min_value=1)
 
 
 class Network:
