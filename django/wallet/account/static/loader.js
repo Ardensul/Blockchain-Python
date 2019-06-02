@@ -27,15 +27,15 @@ function showLoader(formId) {
             div.style.cssText = "border: 16px solid white; border-radius: 50%; border-top: 16px solid orange; max-width: 100%; max-height: 100%;";
             div.style.cssText += "position: absolute; -webkit-animation: spin 1s linear infinite; animation: spin 1s linear infinite; z-index: 101;";
             document.getElementsByTagName("body")[0].appendChild(div);
+			
+			/* Create animation data for the spinner */
+			const style = document.createElement("style");
+			style.innerHTML += "@-webkit-keyframes spin	{ 0% { -webkit-transform: rotate(0deg); } 100% { -webkit-transform: rotate(360deg); }}";
+			style.innerHTML += "@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}";
+			document.getElementsByTagName("head")[0].appendChild(style);
         }
 
         resizeLoader();
-
-        /* Create animation data for the spinner */
-        const style = document.createElement("style");
-        style.innerHTML += "@-webkit-keyframes spin	{ 0% { -webkit-transform: rotate(0deg); } 100% { -webkit-transform: rotate(360deg); }}";
-        style.innerHTML += "@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}";
-        document.getElementsByTagName("head")[0].appendChild(style);
     }
 }
 

@@ -19,19 +19,22 @@ function pop(msg)
 	if (document.getElementById("pop"))
 	{
 		/* Re-purpose it */
-		document.getElementById("pop").style.display = "block";
-		div.style.top = div.style.height * (-1);
+		var div = document.getElementById("pop");
+		div.style.display= "block";
+		div.getElementsByTagName("p")[0].innerHTML = msg;
+		div.style.top = "-" + 2 * parseInt(div.style.height) + "px;";
 	}
 	else
 	{
 		/* Create message div if it does not exist */
 		var div = document.createElement("div");
 		div.setAttribute("id", "pop");
-		div.style.cssText = "display: block; background: white; border: 15px solid white; text-align: center; position: absolute; top: 0; left: 0; z-index: 102;";
+		div.style.cssText = "display: block; background: white; border: 1px solid white; border-radius: 15px; text-align: center; padding: 15px; position: absolute; z-index: 102;";
+		div.style.cssText += "box-shadow: 5px 10px 5px #000000";
 		div.style.cssText += "width: " + (viewPortWidth * 20)/100 + "px;";
 		div.style.cssText += "height: " + (viewPortHeight * 10)/100 + "px;";
-		div.style.left = viewPortWidth/2 - div.style.width/2;
-		div.style.top = div.style.height * (-1);
+		div.style.cssText += "left: " + (viewPortWidth/2 - parseInt(div.style.width)/2) + "px;";
+		div.style.cssText += "top: -" + 2 * parseInt(div.style.height) + "px;";
 		
 		var p = document.createElement("p");
 		p.innerHTML = msg;
