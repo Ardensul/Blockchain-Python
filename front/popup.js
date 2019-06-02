@@ -1,3 +1,33 @@
+const status = { HIDDEN: 0, SHOWING: 1, SHOWN: 2, HIDING: 3 };
+let s = status.SHOWING;
+var timer;
+
+function setState(state)
+{
+	s = state;
+	
+	switch(state)
+	{
+		case status.HIDDEN:
+			console.log("Changed state to hidden");
+			break;
+		case status.SHOWING:
+			console.log("Changed state to showing");
+			break;
+		case status.SHOWN:
+			console.log("Changed state to shown");
+			break;
+		case status.HIDING:
+			console.log("Changed state to hiding");
+			break;
+	}
+}
+
+function getState()
+{
+	return s;
+}
+
 function pop(msg)
 {
 	/* Get viewport dimensions */
@@ -20,9 +50,9 @@ function pop(msg)
 	{
 		/* Re-purpose it */
 		var div = document.getElementById("pop");
-		div.style.display= "block";
 		div.getElementsByTagName("p")[0].innerHTML = msg;
-		div.style.top = "-" + 2 * parseInt(div.style.height) + "px;";
+		div.style.top = "-" + 2 * parseInt(div.style.height) + "px";
+		div.style.display= "block";
 	}
 	else
 	{
@@ -40,37 +70,82 @@ function pop(msg)
 		p.innerHTML = msg;
 		div.appendChild(p);
 		
+		var d = document.createElement("div");
+		d.style.cssText += "text-align: right; width: 100%";
+		
 		var b = document.createElement("button");
-		b.onclick = function(){ slideIn(); };
+		b.onclick = function(){ closePop(); };
 		b.innerHTML = "Close";
-		div.appendChild(b);
+		d.appendChild(b);
+		div.appendChild(d)
 		
 		document.getElementsByTagName("body")[0].appendChild(div);
 	}
 	
-	slideOut();
-	setTimeout(slideIn, 5000);
+	setState(status.SHOWING);
+
+	switch(s)
+	{
+		case status.HIDDEN:
+			clearInterval(timer);
+			break;
+		case status.SHOWING:
+			timer = setInterval(slideOut, 5);
+			break;
+		case status.SHOWN:
+			clearInterval(timer);
+			timer = setTimeout(transition, 6000);
+			break;
+		case status.HIDING:
+			clearTimeout(timer);
+			setInterval(slideIn, 5);
+			break;
+	}
 }
 
 function slideOut()
 {
 	var div = document.getElementById("pop");
-	
-	while (parseInt(div.style.top) < 0)
+
+	if (getState() == status.SHOWING)
 	{
-		//setInterval( function(){ div.style.top = parseInt(div.style.top) + 1 + "px"; }, 50 );
-		div.style.top = parseInt(div.style.top) + 1 + "px";
+		if (parseInt(div.style.top) > 0)
+		{
+			setState(status.SHOWN);
+			return 1;
+		}
+		else
+		{
+			div.style.top = parseInt(div.style.top) + 1 + "px";
+		}
 	}
+}
+
+function transition()
+{
+	setState(status.HIDING);
 }
 
 function slideIn()
 {
 	var div = document.getElementById("pop");
-	
-	while (parseInt(div.style.top) > -2 * parseInt(div.style.height))
+
+	if (getState() == status.HIDING)
 	{
-		//setInterval( function(){ div.style.top = parseInt(div.style.top) - 1 + "px"; }, 50 );
-		div.style.top = parseInt(div.style.top) - 1 + "px";
+		if (parseInt(div.style.top) < parseInt(div.style.height) * -2)
+		{
+			div.style.display = "none";
+			setState(status.HIDDEN);
+		}
+		else
+		{
+			div.style.top = parseInt(div.style.top) - 1 + "px";
+		}
 	}
-	div.style.display = "none";
+}
+
+function closePop()
+{
+	document.getElementById("pop").style.display = "none";
+	setState(status.HIDDEN);
 }
