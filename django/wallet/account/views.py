@@ -23,7 +23,7 @@ def login(request):
             request.session["user"] = form.export()
             return redirect("/")
     input_message = "Log in"
-    return render(request, 'form.html', locals())
+    return render(request, 'login.html', locals())
 
 
 def logout(request):
@@ -45,7 +45,7 @@ def new_key(request):
     :return: a render whose content contains a *** template TODO
     """
     key = User.create_key()
-    return render(request, 'form.html')  # TODO
+    return render(request, 'login')  # TODO
 
 
 def transaction(request):

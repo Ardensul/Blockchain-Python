@@ -1,0 +1,23 @@
+{% extends 'navbar.html' %}
+
+{% block body %}
+    <div class="main">
+        <form method="post">
+            {% csrf_token %}
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Private key</th>
+                        <td>{{ form.private_key }}</td>
+                    </tr>
+                    <tr>
+                        <th>Public key</th>
+                        <td>{{ form.public_key }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <input class="button" type="submit" value="{{ input_message }}"/>
+        </form>
+        {% if send %}Transaction send !{{ results }}{% endif %}
+    </div>
+{% endblock %}
