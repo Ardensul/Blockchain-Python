@@ -83,7 +83,7 @@ def send_transaction(request):
 
         if transaction_form.is_valid():
             user = User(request.session["user"])
-            if user.get_amount() >= transaction_form["amount"]:
+            if user.get_amount() >= int(transaction_form["amount"].data):
                 success = Network().send(transaction_form.export(user))
                 request.session["send_transaction"] = success
             else:
@@ -101,10 +101,10 @@ def send_payment(request):
         if payment_form.is_valid():
             user = User(request.session["user"])
             company = get_company_account()
-            if company.get_amount() >= payment_form["amount"].data:
-                payment_transfert = Transaction({"receive": user.get_unique_key(),
-                                                 "amount": payment_form["amount"].data})
-                success = Network().send(payment_transfert.export(company))
+            if company.get_amount() >= int(payment_form["amount"].data):
+                payment_transfer = Transaction({"beneficiary": user.get_unique_key(),
+                                                "amount": payment_form["amount"].data})
+                success = Network().send(payment_transfer.export(company))
                 request.session["send_payment"] = success
             else:
                 request.session["send_payment"] = False

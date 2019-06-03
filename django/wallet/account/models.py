@@ -42,7 +42,7 @@ class User(forms.Form):
         return key
 
     def get_amount(self):
-        return self["public_key"]  # TODO
+        return 10  # TODO
 
     def check_key(self):
         """Verifies that the public key and the private key match.
@@ -112,16 +112,15 @@ class User(forms.Form):
 
 class Transaction(forms.Form):
     """Form and representation of a transaction."""
-    receive = forms.CharField(required=True)
+    beneficiary = forms.CharField(required=True)
     amount = forms.IntegerField(required=True, min_value=1)
 
     def export(self, user: User):
         """Returns the transaction with the signature.
 
-        :param user: the :py:class:`User` to complete and sign the transaction
         :return: a string representing the transaction
         """
-        message = f"from: {user.get_unique_key()}, to: {self['receive'].data}, amount: {self['amount'].data}"
+        message = f"from: {user.get_unique_key()}, to: {self['beneficiary'].data}, amount: {self['amount'].data}"
         message_signature = rsa.sign(message.encode(), user.get_private_key(), "SHA-256")
         # TODO: change hast to sign/signature ?
         return f"publicKey: {user['public_key'].data}, " + message + f", hash: {message_signature}"
