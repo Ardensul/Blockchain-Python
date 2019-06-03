@@ -1,4 +1,5 @@
 const status = {HIDDEN: 0, SHOWING: 1, SHOWN: 2, HIDING: 3};
+const retCode = {NEUTRAL: 0, SUCCESS: 1, ERROR: 2};
 let s = status.SHOWING;
 let timer;
 
@@ -31,7 +32,18 @@ function getState() {
     return s;
 }
 
-function pop(msg) {
+function pop(msg, code=retCode.NEUTRAL) {
+
+    let color;
+
+    if (code == retCode.NEUTRAL)
+        color = "#DDDDDD";
+    else if (code == retCode.SUCCESS)
+        color = "#00AA00";
+    else if (code == retCode.ERROR)
+        color = "#AA0000";
+
+
     let div;
     /* Get viewport dimensions */
     let viewPortWidth;
