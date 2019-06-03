@@ -71,11 +71,13 @@ function pop(msg, code = retCode.NEUTRAL) {
         div.getElementsByTagName("p")[0].innerHTML = msg;
         div.style.top = "-" + 2 * parseInt(div.style.height) + "px";
         div.style.display = "block";
+		div.style.background = color;
+		div.style.border = "1px solid " + color; 
     } else {
         /* Create message div if it does not exist */
         div = document.createElement("div");
         div.setAttribute("id", "pop");
-        div.style.cssText = "display: block; background: white; border: 1px solid white; border-radius: 15px; text-align: center; padding: 15px; position: absolute; z-index: 102;";
+        div.style.cssText = "display: block; background: " + color + "; border: 1px solid " + color + "; border-radius: 15px; text-align: center; padding: 15px; position: absolute; z-index: 102;";
         div.style.cssText += "box-shadow: 5px 10px 10px #000000";
         div.style.cssText += "width: " + (viewPortWidth * 20) / 100 + "px;";
         div.style.cssText += "height: " + (viewPortHeight * 10) / 100 + "px;";
