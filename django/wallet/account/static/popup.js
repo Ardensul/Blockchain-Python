@@ -32,17 +32,24 @@ function getState() {
     return s;
 }
 
-function pop(msg, code=retCode.NEUTRAL) {
+function pop(msg, code = retCode.NEUTRAL) {
 
     let color;
 
-    if (code == retCode.NEUTRAL)
-        color = "#DDDDDD";
-    else if (code == retCode.SUCCESS)
-        color = "#00AA00";
-    else if (code == retCode.ERROR)
-        color = "#AA0000";
-
+    switch (code) {
+        case retCode.NEUTRAL:
+            color = "#DDDDDD";
+            break;
+        case retCode.SUCCESS:
+            color = "#00AA00";
+            break;
+        case retCode.ERROR:
+            color = "#AA0000";
+            break;
+        default:
+            color = "#DDDDDD";
+            break;
+    }
 
     let div;
     /* Get viewport dimensions */
