@@ -2,8 +2,20 @@
 
 {% block body %}
     <div class="main">
-        <p id="my_address">{{ user_address }}</p>
-        <p>my XLII</p>
-        <span>Null</span>
+        <h2>My wallet</h2>
+        
+        <table>
+            <tbody>
+                <tr>
+                    <th>My address</th>
+                    <td>{{ user_address }}</td>
+                </tr>
+
+                <tr>
+                    <th>My balance</th>
+                    <td>Null</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 {% endblock %}

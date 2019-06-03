@@ -9,26 +9,32 @@
 {% endblock %}
 
 {% block body %}
-    <div class="tiers">
+    <div class="card">
+        <h2>Make a transaction</h2>
+
         <form id="transactionForm" action="{{ request.path }}send" method="post">
             {% csrf_token %}
             <table>
                 {{ transaction_form.as_table }}
             </table>
-            <input type="submit" value="Make transaction" onclick="showLoader('transactionForm')"/>
+            <input class="button" type="submit" value="Make transaction" onclick="showLoader('transactionForm')"/>
         </form>
         {% if send %}Transaction send !{{ results }}{% endif %}
     </div>
+
     <div class="card">
+        <h2>Transfer coins in your wallet</h2>
+
         <form id="paymentForm" action="{{ request.path }}payment" method="post">
             {% csrf_token %}
             <table>
                 {{ bank_form.as_table }}
             </table>
-            <input type="submit" value="Make transaction" onclick="showLoader('paymentForm')"/>
+            <input class="button" type="submit" value="Make transaction" onclick="showLoader('paymentForm')"/>
         </form>
         {% if send %}Transaction send !{{ results }}{% endif %}
     </div>
+
     <script src="{% static "loader.js" %}"></script>
     {% if send_transaction_success == False or send_transaction_success == True %}
         <script>

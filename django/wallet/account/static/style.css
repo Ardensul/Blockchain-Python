@@ -2,6 +2,14 @@ body {
     color: #242424;
 }
 
+h2 {
+    margin: 0 0 10px 0;
+}
+
+h3 {
+    margin: 0 0 10px 0;
+}
+
 .main {
     margin: 5% auto;
     width: max-content;
@@ -13,7 +21,7 @@ body {
 }
 
 table {
-    margin: auto auto 10%;
+    margin: auto;
 }
 
 th {
@@ -32,16 +40,18 @@ textarea {
     overflow-y: scroll;
 }
 
-.card, .tiers {
+.card {
+    margin: 50px auto;
+    width: 300px;
     padding: 4%;
     text-align: center;
-    background-color: grey;
-    min-width: 400px;
-    width: 20%;
-    margin: 5% auto auto;
+    background-color: white;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 20%);
+    border-radius: 3px;
 }
 
 .button {
+    margin: 10px;
     padding: 10px 20px;
     background-color: #242424;
     border: none;
