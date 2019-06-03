@@ -114,13 +114,21 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Login patch
+
 LOGIN_URL = "/login/"
+
+# Public URL in addition to LOGIN_URL
 
 EXEMPT_URLS = [
     "/logout/",
     "/new-key/"
 ]
 
+# File names containing the company's RSA keys in the data folder
+
 NAME_COMPANY_KEY_FILES = "id_rsa"
+
+# Internet address of the web directory
 
 WEB_DIRECTORY_HOST = "http://127.0.0.1:8000"

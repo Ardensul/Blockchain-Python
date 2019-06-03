@@ -4,7 +4,7 @@ from account.models import Transaction, User, BankTransfer, Network
 from account.utils import get_company_account
 
 
-def index(request):  # TODO
+def index(request):
     user = User(request.session["user"])
     user_address = user.get_address()
     return render(request, 'wallet.html', {"login": True, "user_address": user_address})
