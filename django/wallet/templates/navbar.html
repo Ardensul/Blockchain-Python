@@ -18,7 +18,7 @@
 
 <body>
 <div class="nav-bar">
-    <span class="nav-title">Wallet</span>
+    <a class="nav-title" href="/">Wallet</span>
     {% if login %}
         <a class="nav-link {% if patch == "index" %}active{% endif %}" href="{% url "index" %}">My wallet</a>
         <a class="nav-link {% if patch == "transaction" %}active{% endif %}" href="{% url "transaction" %}">Make a
