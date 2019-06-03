@@ -26,7 +26,7 @@
 
         <a class="nav-link right" href="{% url "logout" %}">Log out</a>
     {% else %}
-        <a class="nav-link {% if patch == "new_key" %}active{% endif %}" href="#">Create a new key</a>
+        <a class="nav-link {% if patch == "new_key" %}active{% endif %}" href="{% url "new_key" %}">Create a new key</a>
     {% endif %}
 </div>
 {% block body %}

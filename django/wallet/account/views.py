@@ -45,7 +45,7 @@ def new_key(request):
     :return: a render whose content contains a *** template TODO
     """
     key = User.create_key()
-    return render(request, 'login.html')  # TODO
+    return render(request, 'new_keys.html', {"public_key": key["public"], "private_key": key["private"]})  # TODO
 
 
 def transaction(request):

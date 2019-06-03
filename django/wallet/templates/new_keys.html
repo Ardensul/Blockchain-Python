@@ -5,18 +5,20 @@
         <h2>New keys</h2>
         <h3>Your new credentials. If you lose them, you won't be able to use your wallet anymore.</h3>
 
-        <table>
-            <tbody>
+        {% autoescape on %}
+            <table>
+                <tbody>
                 <tr>
                     <th>Private key</th>
-                    <td></td>
+                    <td>{{ private_key | linebreaksbr }}</td>
                 </tr>
 
                 <tr>
                     <th>Public key</th>
-                    <td></td>
+                    <td>{{ public_key | linebreaksbr }}</td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        {% endautoescape %}
     </div>
 {% endblock %}
