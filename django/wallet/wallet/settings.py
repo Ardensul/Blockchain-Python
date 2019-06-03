@@ -114,7 +114,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Login patch
+# Login path
 
 LOGIN_URL = "/login/"
 
