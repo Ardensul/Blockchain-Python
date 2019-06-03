@@ -32,14 +32,14 @@ class User(forms.Form):
         """
         return rsa.PublicKey.load_pkcs1(self["public_key"].data)
 
-    def get_unique_key(self):
-        key = self._sha256(self["public_key"].data)
-        key_ripemd160 = self._ripemd160(key)
-        key = self._sha256(key_ripemd160)
-        key = self._sha256(key)
-        key = key_ripemd160 + key[0:4]
-        key = self._md5(key)
-        return key
+    def get_address(self):
+        address = self._sha256(self["public_key"].data)
+        address_ripemd160 = self._ripemd160(address)
+        address = self._sha256(address_ripemd160)
+        address = self._sha256(address)
+        address = address_ripemd160 + address[0:4]
+        address = self._md5(address)
+        return address
 
     def get_amount(self):
         return 10  # TODO
@@ -112,7 +112,7 @@ class User(forms.Form):
 
 class Transaction(forms.Form):
     """Form and representation of a transaction."""
-    beneficiary = forms.CharField(required=True)
+    beneficiary = forms.CharField(required=True, min_length=32, max_length=32)
     amount = forms.IntegerField(required=True, min_value=1)
 
     def export(self, user: User):
@@ -120,7 +120,7 @@ class Transaction(forms.Form):
 
         :return: a string representing the transaction
         """
-        message = f"from: {user.get_unique_key()}, to: {self['beneficiary'].data}, amount: {self['amount'].data}"
+        message = f"from: {user.get_address()}, to: {self['beneficiary'].data}, amount: {self['amount'].data}"
         message_signature = rsa.sign(message.encode(), user.get_private_key(), "SHA-256")
         # TODO: change hast to sign/signature ?
         return f"publicKey: {user['public_key'].data}, " + message + f", hash: {message_signature}"

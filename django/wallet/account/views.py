@@ -6,7 +6,7 @@ from account.utils import get_company_account
 
 def index(request):  # TODO
     user = User(request.session["user"])
-    user_address = user.get_unique_key()
+    user_address = user.get_address()
     return render(request, 'wallet.html', {"login": True, "user_address": user_address})
 
 
@@ -45,7 +45,7 @@ def new_key(request):
     :return: a render whose content contains a *** template TODO
     """
     key = User.create_key()
-    return render(request, 'login')  # TODO
+    return render(request, 'login.html')  # TODO
 
 
 def transaction(request):
@@ -102,7 +102,7 @@ def send_payment(request):
             user = User(request.session["user"])
             company = get_company_account()
             if company.get_amount() >= int(payment_form["amount"].data):
-                payment_transfer = Transaction({"beneficiary": user.get_unique_key(),
+                payment_transfer = Transaction({"beneficiary": user.get_address(),
                                                 "amount": payment_form["amount"].data})
                 success = Network().send(payment_transfer.export(company))
                 request.session["send_payment"] = success
