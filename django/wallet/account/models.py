@@ -11,6 +11,7 @@ import rsa
 from django import forms
 from django.conf import settings
 from django.core.validators import RegexValidator
+from django.db import models
 
 logger = logging.getLogger(__name__)
 
@@ -115,7 +116,7 @@ class User(forms.Form):
 class Transaction(forms.Form):
     """Form and representation of a transaction."""
     beneficiary = forms.CharField(required=True, min_length=32, max_length=32)
-    amount = forms.IntegerField(required=True, min_value=1)
+    amount = forms.FloatField(required=True, min_value=0.0001)
 
     def export(self, user: User):
         """Returns the transaction with the signature.
@@ -136,6 +137,14 @@ class BankTransfer(forms.Form):
                            validators=[RegexValidator(r'[A-Z]{2}[0-9]{2}\s([0-9]{4}\s){5}[0-9]{3}', "not an IBAN")])
     BIC = forms.CharField(required=True, max_length=12)
     amount = forms.IntegerField(required=True, min_value=1)
+
+
+class SaveTransaction(models.Model):
+    sender = models.CharField(max_length=32, null=False)
+    receive = models.CharField(max_length=32, null=False)
+    timestamp = models.FloatField(null=False)
+    amount = models.FloatField(null=False)
+    signature = models.TextField(null=False, unique=True)
 
 
 class Network:

@@ -1,6 +1,10 @@
+import json
+
+from django.db import IntegrityError
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
-from account.models import Transaction, User, BankTransfer, Network
+from account.models import Transaction, User, BankTransfer, Network, SaveTransaction
 from account.utils import get_company_account
 
 
@@ -112,3 +116,20 @@ def send_payment(request):
             request.session["send_payment"] = False
 
     return redirect("transaction")
+
+
+def save_transaction(request):
+    if request.method == "POST":
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+
+        data = body_data["data"]
+
+        block_transaction = SaveTransaction(sender=data["from"], receive=data["to"], amount=data["amount"],
+                                            timestamp=data["timestamp"], signature=data["signature"])
+        try:
+            block_transaction.save()
+        except IntegrityError:
+            pass
+
+    return JsonResponse({})
