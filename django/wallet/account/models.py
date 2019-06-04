@@ -121,9 +121,9 @@ class Transaction(forms.Form):
         :return: a string representing the transaction
         """
         json_data = {"from": user.get_address(), "to": self['beneficiary'].data, "amount": self['amount'].data}
-        json_signature = rsa.sign(str(json_data), user.get_private_key(), "SHA-256")
+        json_signature = rsa.sign(str(json_data).encode(), user.get_private_key(), "SHA-256")
         json_data["signature"] = json_signature
-        return str(json_data)
+        return str(json_data).encode()
 
 
 class BankTransfer(forms.Form):
