@@ -47,10 +47,10 @@ def new_key(request):
     """View generating new RSA keys
 
     :param request: Object containing the web request
-    :return: a render whose content contains a *** template TODO
+    :return: a render whose content contains a new_keys.html template
     """
     key = User.create_key()
-    return render(request, 'new_keys.html', {"public_key": key["public"], "private_key": key["private"]})  # TODO
+    return render(request, 'new_keys.html', {"public_key": key["public"], "private_key": key["private"]})
 
 
 def transaction(request):
