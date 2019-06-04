@@ -1,3 +1,4 @@
+import base64
 import hashlib
 import json
 import logging
@@ -120,10 +121,11 @@ class Transaction(forms.Form):
 
         :return: a string representing the transaction
         """
-        json_data = {"from": user.get_address(), "to": self['beneficiary'].data, "amount": self['amount'].data}
+        json_data = {"from": user.get_address(), "to": self['beneficiary'].data, "amount": self['amount'].data,
+                     "publicKey": user["public_key"].data}
         json_signature = rsa.sign(str(json_data).encode(), user.get_private_key(), "SHA-256")
-        json_data["signature"] = json_signature
-        return str(json_data).encode()
+        json_data["signature"] = base64.b64encode(json_signature)
+        return json_data
 
 
 class BankTransfer(forms.Form):
@@ -138,7 +140,7 @@ class Network:
     def __init__(self):
         """Network class builder"""
         self.web_directory_host = settings.WEB_DIRECTORY_HOST
-        self.directory_list = self._get_directory()
+        self.directory_list = ["192.168.43.145"]  # self._get_directory()
 
     def send(self, message):
         """Starts the procedure of sending a message to a miner.
@@ -174,12 +176,14 @@ class Network:
         """
         global result
 
+        data = str(message).encode()
+
         host = random.choice(self.directory_list)
         port = 7777
 
         try:
             sock.connect((host, port))
-            sock.send(message.encode())
+            sock.send(data)
             result = True
         except socket.error:
             sock.close()
@@ -189,7 +193,7 @@ class Network:
                 try:
                     requests.delete(self.web_directory_host, data=data)
                 finally:
-                    self.directory_list.remove(host)
+                    # self.directory_list.remove(host)
                     result = self._tx(sock, message, try_count + 1)
             else:
                 logger.error("Unable to contact a miner")
