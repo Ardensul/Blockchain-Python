@@ -1,9 +1,10 @@
 import json
 import logging
 
+from django.db import IntegrityError
 from django.http import JsonResponse
 
-from api.models import Address
+from api.models import Minor, Client
 
 logger = logging.getLogger(__name__)
 
@@ -19,23 +20,53 @@ def index(request):
     if request.method == "POST":
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
-        address = body_data['address']
-        addr = Address(address=address)
-        addr.save()
-        logger.info(f"Address {address} has been added")
+
+        try:
+            minor_address = body_data['minor']
+            minor = Minor(address=minor_address)
+            minor.save()
+            logger.info(f"Address {minor_address} has been added")
+        except (KeyError, IntegrityError):
+            pass
+
+        try:
+            client_address = body_data['client']
+            client = Client(address=client_address)
+            client.save()
+            logger.info(f"Address {client_address} has been added")
+        except (KeyError, IntegrityError):
+            pass
+
     elif request.method == "DELETE":
         body_unicode = request.body.decode('utf-8')
         body_data = json.loads(body_unicode)
-        address = body_data["address"]
-        addr = Address.objects.filter(address=address)
-        addr.delete()
 
-        logger.info(f"Address {address} has been deleted")
+        try:
+            minor_address = body_data["minor"]
+            minor = Minor.objects.filter(address=minor_address)
+            minor.delete()
+            logger.info(f"Address {minor_address} has been deleted")
+        except KeyError:
+            pass
 
-    results = []
+        try:
+            client_address = body_data["minor"]
+            client = Minor.objects.filter(address=client_address)
+            client.delete()
+            logger.info(f"Address {client_address} has been deleted")
+        except KeyError:
+            pass
 
-    for addr in Address.objects.all():
-        results.append(addr.address)
+    minor_results = []
+    client_results = []
+
+    for minor in Minor.objects.all():
+        minor_results.append(minor.address)
+
+    for client in Client.objects.all():
+        client_results.append(client.address)
+
+    results = {"minor": minor_results, "client": client_results}
 
     logger.info(results)
 

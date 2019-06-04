@@ -4,6 +4,7 @@ import json
 import logging
 import random
 import socket
+import time
 
 import requests
 import rsa
@@ -121,11 +122,12 @@ class Transaction(forms.Form):
 
         :return: a string representing the transaction
         """
-        json_data = {"from": user.get_address(), "to": self['beneficiary'].data, "amount": self['amount'].data,
-                     "publicKey": user["public_key"].data}
-        json_signature = rsa.sign(str(json_data).encode(), user.get_private_key(), "SHA-256")
-        json_data["signature"] = base64.b64encode(json_signature)
-        return json_data
+        data = {"from": user.get_address(), "to": self['beneficiary'].data, "amount": self['amount'].data,
+                "timestamp": time.time(), "publicKey": user["public_key"].data}
+        json_signature = rsa.sign(str(data).encode(), user.get_private_key(), "SHA-256")
+        data["signature"] = base64.b64encode(json_signature).decode()
+
+        return json.dumps(data)
 
 
 class BankTransfer(forms.Form):
