@@ -120,10 +120,10 @@ class Transaction(forms.Form):
 
         :return: a string representing the transaction
         """
-        message = f"from: {user.get_address()}, to: {self['beneficiary'].data}, amount: {self['amount'].data}"
-        message_signature = rsa.sign(message.encode(), user.get_private_key(), "SHA-256")
-        # TODO: change hast to sign/signature ?
-        return f"publicKey: {user['public_key'].data}, " + message + f", hash: {message_signature}"
+        json_data = {"from": user.get_address(), "to": self['beneficiary'].data, "amount": self['amount'].data}
+        json_signature = rsa.sign(str(json_data), user.get_private_key(), "SHA-256")
+        json_data["signature"] = json_signature
+        return str(json_data)
 
 
 class BankTransfer(forms.Form):
