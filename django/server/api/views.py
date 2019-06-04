@@ -4,7 +4,7 @@ import logging
 from django.db import IntegrityError
 from django.http import JsonResponse
 
-from api.models import Minor, Client
+from api.models import Miner, Client
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +23,7 @@ def index(request):
 
         try:
             minor_address = body_data['minor']
-            minor = Minor(address=minor_address)
+            minor = Miner(address=minor_address)
             minor.save()
             logger.info(f"Address {minor_address} has been added")
         except (KeyError, IntegrityError):
@@ -43,7 +43,7 @@ def index(request):
 
         try:
             minor_address = body_data["minor"]
-            minor = Minor.objects.filter(address=minor_address)
+            minor = Miner.objects.filter(address=minor_address)
             minor.delete()
             logger.info(f"Address {minor_address} has been deleted")
         except KeyError:
@@ -51,7 +51,7 @@ def index(request):
 
         try:
             client_address = body_data["minor"]
-            client = Minor.objects.filter(address=client_address)
+            client = Miner.objects.filter(address=client_address)
             client.delete()
             logger.info(f"Address {client_address} has been deleted")
         except KeyError:
@@ -60,7 +60,7 @@ def index(request):
     minor_results = []
     client_results = []
 
-    for minor in Minor.objects.all():
+    for minor in Miner.objects.all():
         minor_results.append(minor.address)
 
     for client in Client.objects.all():

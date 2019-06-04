@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Minor(models.Model):
+class Miner(models.Model):
     """Model representing the Address table in the database"""
     address = models.TextField(unique=True)
 
