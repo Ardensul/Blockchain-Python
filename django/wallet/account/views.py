@@ -11,7 +11,8 @@ from account.utils import get_company_account
 def index(request):
     user = User(request.session["user"])
     user_address = user.get_address()
-    return render(request, 'wallet.html', {"login": True, "user_address": user_address})
+    user_amount = user.get_amount()
+    return render(request, 'wallet.html', {"login": True, "user_address": user_address, "user_amount": user_amount})
 
 
 def login(request):

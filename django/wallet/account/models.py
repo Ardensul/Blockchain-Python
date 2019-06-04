@@ -45,7 +45,14 @@ class User(forms.Form):
         return address
 
     def get_amount(self):
-        return 10  # TODO
+        amount = 0
+        for i in SaveTransaction.objects.filter(receive=self.get_address()):
+            amount += i
+
+        for i in SaveTransaction.objects.filter(sender=self.get_address()):
+            amount -= i
+
+        return amount
 
     def check_key(self):
         """Verifies that the public key and the private key match.
