@@ -122,7 +122,8 @@ LOGIN_URL = "/login/"
 
 EXEMPT_URLS = [
     "/logout/",
-    "/new-key/"
+    "/new-key/",
+    "/block/add/"
 ]
 
 # File names containing the company's RSA keys in the data folder
