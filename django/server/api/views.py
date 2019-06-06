@@ -22,10 +22,10 @@ def index(request):
         body_data = json.loads(body_unicode)
 
         try:
-            minor_address = body_data['minor']
-            minor = Miner(address=minor_address)
-            minor.save()
-            logger.info(f"Address {minor_address} has been added")
+            miner_address = body_data['miner']
+            miner = Miner(address=miner_address)
+            miner.save()
+            logger.info(f"Address {miner_address} has been added")
         except (KeyError, IntegrityError):
             pass
 
@@ -42,7 +42,7 @@ def index(request):
         body_data = json.loads(body_unicode)
 
         try:
-            minor_address = body_data["minor"]
+            minor_address = body_data["miner"]
             minor = Miner.objects.filter(address=minor_address)
             minor.delete()
             logger.info(f"Address {minor_address} has been deleted")
@@ -50,23 +50,23 @@ def index(request):
             pass
 
         try:
-            client_address = body_data["minor"]
-            client = Miner.objects.filter(address=client_address)
+            client_address = body_data["client"]
+            client = Client.objects.filter(address=client_address)
             client.delete()
             logger.info(f"Address {client_address} has been deleted")
         except KeyError:
             pass
 
-    minor_results = []
+    miner_results = []
     client_results = []
 
-    for minor in Miner.objects.all():
-        minor_results.append(minor.address)
+    for miner in Miner.objects.all():
+        miner_results.append(miner.address)
 
     for client in Client.objects.all():
         client_results.append(client.address)
 
-    results = {"minor": minor_results, "client": client_results}
+    results = {"miner": miner_results, "client": client_results}
 
     logger.info(results)
 

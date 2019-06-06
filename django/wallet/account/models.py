@@ -158,7 +158,7 @@ class Network:
     def __init__(self):
         """Network class builder"""
         self.web_directory_host = settings.WEB_DIRECTORY_HOST
-        self.directory_list = ["192.168.43.145"]  # self._get_directory()
+        self.directory_list = self._get_directory()["miner"]
 
     def send(self, message):
         """Starts the procedure of sending a message to a miner.
@@ -179,10 +179,10 @@ class Network:
         """
         try:
             results = requests.get(self.web_directory_host)
-            return results.json()
+            return dict(results.json())
         except requests.exceptions.RequestException:
             logger.error(f"Failed connection to the web directory host: {self.web_directory_host}")
-            return []
+            return dict([])
 
     def _tx(self, sock, message, try_count=0):
         """Sends a message to a miner at random from the address list.
