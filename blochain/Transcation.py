@@ -1,3 +1,4 @@
+import base64
 import json
 import rsa
 
@@ -33,12 +34,10 @@ class Transaction:
                 else:
                     continue
 
-    def veriftransa(self,transa):
-        verif = "from: "+str(transa["from"]) + ", to:" + str(transa["to"]) + ",amount: " + str(transa["amount"])
-        verif.encode(encoding='Utf-8')
-        crypt = rsa.encrypt(verif,transa["privateKey"])
-        if crypt == transa["hash"]:
-            return True
-        else:
-            return False
+    def veriftransa(self,transac):
+        data = {"from": transac["from"], "to": transac["to"], "amount": transac["amount"],
+                "publicKey": transac["publicKey"]}
+        veryf = base64.b64decode(transac["signature"].encode())
+        clef = rsa.PublicKey.load_pkcs1(transac["publicKey"])
+        return rsa.verify(str(data).encode(), veryf, clef)
 

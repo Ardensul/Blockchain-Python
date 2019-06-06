@@ -20,14 +20,6 @@ class Chain:
         self.blockChain.append(block)
         self.saveChain()
 
-    def data_check(self,data):
-        if not data.emeteur or not data.receveur or not data.montant or not data.publicKey or not data.signature:
-            return False
-        txt = str(data.emeteur)+str(data.receveur)+str(data.montant)
-        decod = rsa.decrypt(data.signature,data.publicKey)
-        if txt != decod:
-            return False
-        return True
 
     def integrity_check(self):
         for i in range(1,len(self.blockChain)):
@@ -57,9 +49,7 @@ class Chain:
         saveFile.close()
         return True
 
-test = Chain()
+    def addBlock(self,data):
+        id = len(data["block"])-1
+        self.blockChain.append(Block(data["block"][id]["data"], data["block"][id]["previousHash"], data["block"][id]["id"],data["block"][id]["workProof"], data["block"][id]["currentHash"]))
 
-for i in range(5):
-    print("minage block : "+str(i))
-    test.generateBlock(i)
-    print("Le block n°"+str(i)+" a été miné")
