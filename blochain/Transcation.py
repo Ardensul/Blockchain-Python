@@ -5,7 +5,7 @@ import rsa
 
 class Transaction:
     def __init__(self):
-        self.path = "../test/transactions.json"
+        self.path = "./conf/transactions.json"
         file = open(self.path,'r')
         data = json.load(file)
         self.transaction = []

@@ -5,7 +5,7 @@ import json
 
 class Chain:
     def __init__(self):
-        self.path = "../test/chain.json"
+        self.path = "./conf/chain.json"
         self.blockChain = [0]
         exist = os.path.isfile(self.path)
         if exist:

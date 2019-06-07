@@ -6,7 +6,7 @@ class Block:
         self.id = id
         self.previousHash = prevhash
         self.data = data
-        docpre = open("../test/workproof.conf","r")
+        docpre = open("./conf/workproof.conf","r")
         self.prefix = docpre.readline()
         docpre.close()
         self.workProof = workProof
