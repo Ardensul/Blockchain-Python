@@ -1,7 +1,7 @@
 import json
 
 from django.db import IntegrityError
-from django.http import JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from account.models import Transaction, User, BankTransfer, Network, SaveTransaction
@@ -133,4 +133,4 @@ def save_transaction(request):
         except IntegrityError:
             pass
 
-    return JsonResponse({})
+    return HttpResponse(status=200)

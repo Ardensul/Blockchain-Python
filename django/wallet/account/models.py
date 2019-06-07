@@ -211,7 +211,7 @@ class Network:
                 try:
                     requests.delete(self.web_directory_host, data=data)
                 finally:
-                    # self.directory_list.remove(host)
+                    self.directory_list.remove(host)
                     result = self._tx(sock, message, try_count + 1)
             else:
                 logger.error("Unable to contact a miner")

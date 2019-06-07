@@ -46,7 +46,7 @@ class ListenChain(Thread):
                     try:
                         data["block"]
                     except:
-                        self.transaction.updatetransaction(data, "ajout")
+                        self.transaction.update_transaction(data, "ajout")
                     else:
                         self.chain.add_block(data)
                 socClient.close()
@@ -65,7 +65,7 @@ class Miner(Thread):
 
     def run(self):
         while True:
-            current_transaction = self.transaction.gettransaction()
+            current_transaction = self.transaction.get_transaction()
             self.chain.generate_block(current_transaction)
             bchain = self.chain.blockChain.json.encode('Utf-8')
             for i in self.ips["miner"]:
