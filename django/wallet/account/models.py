@@ -207,7 +207,7 @@ class Network:
             sock.close()
 
             if try_count < 10 and len(self.directory_list) > 1:
-                data = json.dumps({"address": host})
+                data = json.dumps({"miner": host})
                 try:
                     requests.delete(self.web_directory_host, data=data)
                 finally:

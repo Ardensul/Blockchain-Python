@@ -2,12 +2,21 @@ import json
 import socket
 from threading import Thread
 
-from requests import get
+import requests
 
 from blochain.Chain import Chain
 from blochain.Transcation import Transaction
 
-ip = get('https://api.ipify.org').text
+web_directory_host = "http://127.0.0.1:8000/"
+
+ip = ""
+
+try:
+    ip = requests.get('https://api.ipify.org').text
+except:
+    print("Connection error with api.ipify.org")
+    exit()
+
 chain = Chain()
 transaction = Transaction()
 
@@ -62,22 +71,38 @@ class Miner(Thread):
             for i in self.ips["miner"]:
                 port = 7777
                 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                connection.connect((i, port))
-                connection.sendall(bchain)
-                connection.close()
+
+                try:
+                    connection.connect((i, port))
+                    connection.sendall(bchain)
+                except socket.error:
+                    data = json.dumps({"miner": i})
+                    try:
+                        requests.delete(web_directory_host, data=data)
+                    except:
+                        pass
+                finally:
+                    connection.close()
+
             for i in self.ips["client"]:
-                port = 7777
-                connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                connection.connect((i, port))
-                connection.sendall(bchain)
-                connection.close()
+                try:
+                    requests.post(i, bchain)
+                except:
+                    pass
 
 
-thread_listen = ListenChain(7777, ip, chain, transaction)
-thread_miner = Miner(chain, transaction, ips)
+try:
+    ips = requests.get(web_directory_host)
 
-thread_listen.start()
-thread_miner.start()
+    thread_listen = ListenChain(7777, ip, chain, transaction)
+    thread_miner = Miner(chain, transaction, ips.json())
 
-thread_listen.join()
-thread_miner.join()
+    thread_listen.start()
+    thread_miner.start()
+
+    thread_listen.join()
+    thread_miner.join()
+
+except:
+    print("Connection error with the web directory host")
+    exit()
