@@ -1,23 +1,25 @@
-from Chain import *
-from Transaction import *
-from threading import Thread
-import socket
-from requests import get
 import json
+import socket
+from threading import Thread
+
+from requests import get
+
+from blochain.Chain import Chain
+from blochain.Transcation import Transaction
 
 ip = get('https://api.ipify.org').text
 chain = Chain()
 transaction = Transaction()
 
-class EcouteChain(Thread):
 
-    def __init__(self, port,ip,chain,transaction):
+class ListenChain(Thread):
+
+    def __init__(self, port, ip, chain, transaction):
         Thread.__init__(self)
         self.port = port
         self.ip = ip
         self.chain = chain
         self.transaction = transaction
-
 
     def run(self):
         soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -28,37 +30,39 @@ class EcouteChain(Thread):
             try:
                 while True:
                     data = socClient.recv(4096)
-                    if data == ('').encode(encoding='Utf-8'):
+                    if data == ''.encode(encoding='Utf-8'):
                         break
                     socClient.sendall(str('ok').encode(encoding='Utf-8'))
                     data = json.loads(data)
-                    try :
+                    try:
                         data["block"]
                     except:
-                        self.transaction.updatetransaction(data,"ajout")
+                        self.transaction.updatetransaction(data, "ajout")
                     else:
-                        self.chain.addBlock(data)
+                        self.chain.add_block(data)
                 socClient.close()
             except socket.error:
                 print('client interrompu')
                 break
 
-class Mineur(Thread)
 
-    def __init__(self,chain,transaction,ips):
+class Miner(Thread):
+
+    def __init__(self, chain, transaction, ips):
+        Thread.__init__(self)
         self.chain = chain
         self.transaction = transaction
         self.ips = ips
 
     def run(self):
         while True:
-            currenttransaction = self.transaction.gettransaction()
-            self.chain.generateBlock(currenttransaction)
+            current_transaction = self.transaction.gettransaction()
+            self.chain.generate_block(current_transaction)
             bchain = self.chain.blockChain.json.encode('Utf-8')
             for i in self.ips["miner"]:
                 port = 7777
                 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                connection.connect((i,port))
+                connection.connect((i, port))
                 connection.sendall(bchain)
                 connection.close()
             for i in self.ips["client"]:
@@ -69,11 +73,11 @@ class Mineur(Thread)
                 connection.close()
 
 
-thread_ecoute = EcouteChain(7777,ip,chain,transaction)
-thread_mineur = Mineur(chain,transaction,ips)
+thread_listen = ListenChain(7777, ip, chain, transaction)
+thread_miner = Miner(chain, transaction, ips)
 
-thread_ecoute.start()
-thread_mineur.start()
+thread_listen.start()
+thread_miner.start()
 
-thread_ecoute.join()
-thread_mineur.join()
+thread_listen.join()
+thread_miner.join()
