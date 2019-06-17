@@ -66,29 +66,30 @@ class Miner(Thread):
     def run(self):
         while True:
             current_transaction = self.transaction.get_transaction()
-            self.chain.generate_block(current_transaction)
-            bchain = self.chain.blockChain.json.encode('Utf-8')
-            for i in self.ips["miner"]:
-                port = 7777
-                connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            if current_transaction :
+                self.chain.generate_block(current_transaction)
+                bchain = self.chain.blockChain.json.encode('Utf-8')
+                for i in self.ips["miner"]:
+                    port = 7777
+                    connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-                try:
-                    connection.connect((i, port))
-                    connection.sendall(bchain)
-                except socket.error:
-                    data = json.dumps({"miner": i})
                     try:
-                        requests.delete(web_directory_host, data=data)
+                        connection.connect((i, port))
+                        connection.sendall(bchain)
+                    except socket.error:
+                        data = json.dumps({"miner": i})
+                        try:
+                            requests.delete(web_directory_host, data=data)
+                        except:
+                            pass
+                    finally:
+                        connection.close()
+
+                for i in self.ips["client"]:
+                    try:
+                        requests.post(i, bchain)
                     except:
                         pass
-                finally:
-                    connection.close()
-
-            for i in self.ips["client"]:
-                try:
-                    requests.post(i, bchain)
-                except:
-                    pass
 
 
 try:
